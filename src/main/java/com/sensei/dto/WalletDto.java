@@ -1,4 +1,4 @@
-package com.sensei.domain;
+package com.sensei.dto;
 
 import lombok.Builder;
 import lombok.Data;
@@ -11,6 +11,6 @@ public class WalletDto {
 
     private Long id;
     private Long userId;
-    private boolean isActive;
+    private boolean active;
     private List<Long> walletsCryptoList;
 }

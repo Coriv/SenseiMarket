@@ -1,4 +1,4 @@
-package com.sensei.domain;
+package com.sensei.dto;
 
 import lombok.Builder;
 import lombok.Data;

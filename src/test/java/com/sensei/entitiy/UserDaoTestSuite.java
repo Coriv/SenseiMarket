@@ -8,7 +8,6 @@ import com.sensei.repository.CryptocurrencyDao;
 import com.sensei.repository.UserDao;
 import com.sensei.repository.WalletCryptoDao;
 import com.sensei.repository.WalletDao;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,10 +23,9 @@ public class UserDaoTestSuite {
     @Autowired
     private CryptocurrencyDao cryptocurrencyDao;
     @Autowired
-    private WalletDao walletDao;
-    @Autowired
     private WalletCryptoDao walletCryptoDao;
-
+    @Autowired
+    private WalletDao walletDao;
     @Test
     void addingNewCryptoToUserTest() {
         User user = new User();
@@ -43,7 +41,7 @@ public class UserDaoTestSuite {
 
 
         Wallet wallet = new Wallet();
-        wallet.setActive(true);
+        //wallet.setActive(true);
         wallet.setUser(user);
 
         user.setWallet(wallet);
@@ -52,20 +50,33 @@ public class UserDaoTestSuite {
         crypto1.setSymbol("BTC");
         crypto1.setName("Bitcoin");
 
+        Cryptocurrency crypto2 = new Cryptocurrency();
+        crypto2.setSymbol("ETH");
+        crypto2.setName("Ethereum");
+
         WalletCrypto walletCrypto = new WalletCrypto();
         walletCrypto.setWallet(wallet);
         walletCrypto.setCryptocurrency(crypto1);
         walletCrypto.setQuantity(new BigDecimal("1200"));
 
-        crypto1.getWalletCryptoList().add(walletCrypto);
-        wallet.getCryptosList().add(walletCrypto);
+        WalletCrypto walletCrypto2 = new WalletCrypto();
+        walletCrypto2.setWallet(wallet);
+        walletCrypto2.setCryptocurrency(crypto2);
+        walletCrypto2.setQuantity(new BigDecimal("982"));
 
-        cryptocurrencyDao.save(crypto1);
+        crypto1.getWalletCryptoList().add(walletCrypto);
+        crypto2.getWalletCryptoList().add(walletCrypto2);
+        wallet.getCryptosList().add(walletCrypto);
+        wallet.getCryptosList().add(walletCrypto2);
+
+
+
         userDao.save(user);
 
+        userDao.deleteById(user.getId());
 
-        BigDecimal quantity = userDao.findById(user.getId()).get().getWallet().getCryptosList().get(0).getQuantity();
+        cryptocurrencyDao.deleteById(crypto1.getSymbol());
+        cryptocurrencyDao.deleteById(crypto2.getSymbol());
 
-        Assertions.assertEquals(new BigDecimal("1200.00"), quantity);
     }
 }

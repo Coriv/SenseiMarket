@@ -1,4 +1,4 @@
-package com.sensei.domain;
+package com.sensei.dto;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
@@ -13,5 +13,4 @@ public class CryptocurrencyDto {
     @NotNull
     private String symbol;
     private String name;
-    private List<Long> walletsCryptoList;
 }

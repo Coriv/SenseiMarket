@@ -23,19 +23,15 @@ public class Wallet {
 
     @Column
     @NotNull
-    private boolean isActive;
+    private boolean active = false;
 
-    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id",
-            referencedColumnName = "id",
-            unique = true)
-    @NotNull
+    @OneToOne(mappedBy = "wallet")
     private User user;
 
     @OneToMany(targetEntity = WalletCrypto.class,
             mappedBy = "wallet",
-            cascade = CascadeType.PERSIST,
-            fetch = FetchType.EAGER)
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
     private List<WalletCrypto> cryptosList = new ArrayList<>();
 
 }

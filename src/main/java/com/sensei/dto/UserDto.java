@@ -1,4 +1,4 @@
-package com.sensei.domain;
+package com.sensei.dto;
 
 import jakarta.validation.constraints.Email;
 import lombok.Builder;
@@ -20,7 +20,7 @@ public class UserDto {
     private LocalDateTime dateOfJoin;
     @Email
     private String email;
-    private boolean isActive;
+    private boolean active;
     private Long walletId;
 
 }

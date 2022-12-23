@@ -1,12 +1,13 @@
 package com.sensei.mapper;
 
-import com.sensei.domain.CryptocurrencyDto;
+import com.sensei.dto.CryptocurrencyDto;
 import com.sensei.entity.Cryptocurrency;
 import com.sensei.entity.WalletCrypto;
 import com.sensei.repository.CryptocurrencyDao;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,9 +32,12 @@ public class CryptocurrencyMapper {
         return CryptocurrencyDto.builder()
                 .symbol(cryptocurrency.getSymbol())
                 .name(cryptocurrency.getName())
-                .walletsCryptoList(cryptocurrency.getWalletCryptoList().stream()
-                        .map(WalletCrypto::getId)
-                        .collect(Collectors.toList()))
                 .build();
+    }
+
+    public List<CryptocurrencyDto> mapToCryptoListDto(List<Cryptocurrency> cryptos) {
+        return cryptos.stream()
+                .map(this::mapToCryptocurrencyDto)
+                .collect(Collectors.toList());
     }
 }

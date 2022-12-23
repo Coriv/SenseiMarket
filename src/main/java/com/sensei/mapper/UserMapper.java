@@ -1,6 +1,6 @@
 package com.sensei.mapper;
 
-import com.sensei.domain.UserDto;
+import com.sensei.dto.UserDto;
 import com.sensei.entity.User;
 import com.sensei.repository.UserDao;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +36,11 @@ public class UserMapper {
         return user;
     }
 
-    public static UserDto mapToUserDto(User user) {
+    public UserDto mapToUserDto(User user) {
+        Long walletId = null;
+        if(user.getWallet() != null) {
+            walletId = user.getWallet().getId();
+        }
         return UserDto.builder()
                 .id(user.getId())
                 .firstName(user.getFirstName())
@@ -47,14 +51,14 @@ public class UserMapper {
                 .idCard(user.getIdCard())
                 .dateOfJoin(user.getDateOfJoin())
                 .email(user.getEmail())
-                .isActive(user.isActive())
-                .walletId(user.getWallet().getId())
+                .active(user.isActive())
+                .walletId(walletId)
                 .build();
     }
 
     public List<UserDto> mapToUserDtoList(List<User> usersList) {
         return usersList.stream()
-                .map(UserMapper::mapToUserDto)
+                .map(this::mapToUserDto)
                 .collect(Collectors.toList());
     }
 }

@@ -55,9 +55,8 @@ public class User {
 
     @Column
     @NotNull
-    private boolean isActive;
+    private boolean active;
 
-    @JoinColumn(unique = true)
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Wallet wallet;
 }

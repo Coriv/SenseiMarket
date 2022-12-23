@@ -6,10 +6,12 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Transactional
 @Repository
 public interface WalletCryptoDao extends CrudRepository<WalletCrypto, Long> {
+    List<WalletCrypto> findAllByWalletId(Long walletId);
 
-    //Iterable<WalletCrypto> findAllById(List<Long> listOfId);
+    Optional<WalletCrypto> findByWalletIdAndAndCryptocurrency_Symbol(Long walletId, String symbol);
 }

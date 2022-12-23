@@ -1,6 +1,6 @@
 package com.sensei.mapper;
 
-import com.sensei.domain.UserDto;
+import com.sensei.dto.UserDto;
 import com.sensei.entity.User;
 import com.sensei.entity.Wallet;
 import org.junit.jupiter.api.Test;
@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -21,11 +23,11 @@ class UserMapperTestSuite {
     @Test
     public void mapToUserTest() {
         UserDto userDto = UserDto.builder()
-                .id(1L)
+                .id(2L)
                 .firstName("Sebastian")
                 .lastName("Boron")
                 .dateOfJoin(LocalDateTime.now())
-                .isActive(true)
+                .active(true)
                 .username("Coriver")
                 .password("Password")
                 .email("sebastian@kodilla.com")
@@ -66,5 +68,29 @@ class UserMapperTestSuite {
         assertEquals(userDto.getPassword(), "Password");
         assertEquals(userDto.getEmail(), "sebastian@kodilla.com");
         assertEquals(userDto.getWalletId(), wallet.getId());
+    }
+
+    @Test
+    public void mapToUserDtoListTest() {
+        Wallet wallet = new Wallet();
+
+        User user = new User();
+        user.setFirstName("Sebastian");
+        user.setLastName("Boron");
+        user.setDateOfJoin(LocalDateTime.now());
+        user.setActive(true);
+        user.setUsername("Coriver");
+        user.setPassword("Password");
+        user.setEmail("sebastian@kodilla.com");
+        user.setWallet(wallet);
+        List<User> users = Arrays.asList(user);
+
+        List<UserDto> usersDto = userMapper.mapToUserDtoList(users);
+
+        assertEquals(usersDto.size(), 1);
+        assertEquals(usersDto.get(0).getFirstName(), "Sebastian");
+        assertEquals(usersDto.get(0).getUsername(), "Coriver");
+        assertEquals(usersDto.get(0).getEmail(), "sebastian@kodilla.com");
+        assertEquals(usersDto.get(0).getWalletId(), wallet.getId());
     }
 }
