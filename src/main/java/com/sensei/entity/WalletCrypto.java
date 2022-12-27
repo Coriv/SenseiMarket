@@ -2,18 +2,14 @@ package com.sensei.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.PositiveOrZero;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 
 @Entity
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
 public class WalletCrypto {
 
     @Id
@@ -29,7 +25,7 @@ public class WalletCrypto {
     @JoinColumn(name = "wallet_id")
     private Wallet wallet;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "cryptocurrency_id")
     private Cryptocurrency cryptocurrency;
 }

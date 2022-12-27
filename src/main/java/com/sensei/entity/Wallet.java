@@ -3,18 +3,17 @@ package com.sensei.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
+
+@Entity
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
-@Entity
 public class Wallet {
 
     @Id
@@ -33,5 +32,11 @@ public class Wallet {
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
     private List<WalletCrypto> cryptosList = new ArrayList<>();
+
+    @OneToMany(targetEntity = Trade.class,
+            mappedBy = "wallet",
+            cascade = CascadeType.PERSIST,
+            fetch = FetchType.EAGER)
+    private List<Trade> trades = new ArrayList<>();
 
 }

@@ -121,7 +121,7 @@ class UserControllerTestSuite {
         userController.blockUser(1L);
         when(userController.blockUser(1L)).thenReturn(ResponseEntity.ok(userDto));
 
-        mockMvc.perform(MockMvcRequestBuilders.put("/v1/user/block/" + 1L)
+        mockMvc.perform(MockMvcRequestBuilders.put("/v1/user/block?userId=" + 1L)
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.active", Matchers.is(false)));
@@ -152,7 +152,7 @@ class UserControllerTestSuite {
     void deleteUserTest() throws Exception {
         when(userController.deleteUser(userDto.getId())).thenReturn(ResponseEntity.ok().build());
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/v1/user/" + userDto.getId())
+        mockMvc.perform(MockMvcRequestBuilders.delete("/v1/user?userId=" + userDto.getId())
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }

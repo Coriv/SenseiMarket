@@ -13,4 +13,5 @@ public class WalletDto {
     private Long userId;
     private boolean active;
     private List<Long> walletsCryptoList;
+    private List<Long> trades;
 }

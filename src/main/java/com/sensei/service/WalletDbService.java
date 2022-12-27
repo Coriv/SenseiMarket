@@ -6,7 +6,6 @@ import com.sensei.entity.WalletCrypto;
 import com.sensei.exception.InvalidUserIdException;
 import com.sensei.exception.WalletNotFoundException;
 import com.sensei.repository.UserDao;
-import com.sensei.repository.WalletCryptoDao;
 import com.sensei.repository.WalletDao;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,7 +21,6 @@ public class WalletDbService {
 
     private final WalletDao walletDao;
     private final UserDao userDao;
-    private final WalletCryptoDao walletCryptoDao;
 
     public Wallet createWallet(Long userId) throws InvalidUserIdException {
         User user = userDao.findById(userId).orElseThrow(InvalidUserIdException::new);
@@ -36,8 +34,8 @@ public class WalletDbService {
     }
 
     public List<WalletCrypto> getListOfCrypto(Long walletId) throws WalletNotFoundException {
-        walletDao.findById(walletId).orElseThrow(WalletNotFoundException::new);
-        return walletCryptoDao.findAllByWalletId(walletId);
+        Wallet wallet = walletDao.findById(walletId).orElseThrow(WalletNotFoundException::new);
+        return wallet.getCryptosList();
     }
 
     public List<WalletCrypto> getCryptosBySymbol(Long walletId, String[] symbols) throws WalletNotFoundException {

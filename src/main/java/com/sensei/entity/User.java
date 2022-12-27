@@ -7,12 +7,13 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
 public class User {
 
     @Id
@@ -57,6 +58,12 @@ public class User {
     @NotNull
     private boolean active;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Wallet wallet;
+
+    @OneToMany(targetEntity = TransactionHistory.class,
+    cascade = CascadeType.REMOVE,
+    fetch = FetchType.EAGER,
+    mappedBy = "user")
+    private List<TransactionHistory> transactions = new ArrayList<>();
 }

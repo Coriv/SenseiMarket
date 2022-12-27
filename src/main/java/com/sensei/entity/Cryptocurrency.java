@@ -8,10 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
 public class Cryptocurrency {
 
     @Id

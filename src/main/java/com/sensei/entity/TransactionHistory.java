@@ -2,7 +2,6 @@ package com.sensei.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,37 +12,39 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class Trade {
+@NoArgsConstructor
+public class TransactionHistory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
     private Long id;
-    @ManyToOne
-    @NotNull
-    private Wallet wallet;
 
     @NotNull
+    @Column(updatable = false)
     private TransactionType transactionType;
-    @ManyToOne
+
     @NotNull
-    private CryptoPair cryptoPair;
+    @Column(updatable = false)
+    private String cryptoPair;
 
     @PositiveOrZero
+    @Column(updatable = false)
     private BigDecimal quantity;
 
     @PositiveOrZero
+    @Column(updatable = false)
     private BigDecimal price;
 
     @PositiveOrZero
-    private BigDecimal value;
-
-    private boolean open = true;
-
-    @PastOrPresent
     @Column(updatable = false)
-    private LocalDateTime openDate;
+    private BigDecimal value;
+    @ManyToOne
+    @JoinColumn(updatable = false)
+    private User user;
 
-    private LocalDateTime closeDate;
+    @NotNull
+    @Column(updatable = false)
+    private LocalDateTime transactionTime;
 }

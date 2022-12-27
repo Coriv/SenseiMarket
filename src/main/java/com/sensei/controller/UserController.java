@@ -2,11 +2,10 @@ package com.sensei.controller;
 
 import com.sensei.dto.UserDto;
 import com.sensei.entity.User;
+import com.sensei.exception.InvalidUserIdException;
 import com.sensei.exception.NotEmptyWalletException;
-import com.sensei.exception.UserNotFoundException;
 import com.sensei.mapper.UserMapper;
 import com.sensei.service.UserDbService;
-import com.sensei.service.WalletDbService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +28,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<UserDto> fetchUserById(@PathVariable Long userId) throws UserNotFoundException {
+    public ResponseEntity<UserDto> fetchUserById(@PathVariable Long userId) throws InvalidUserIdException {
         User user = userDbService.findUserById(userId);
         return ResponseEntity.ok(userMapper.mapToUserDto(user));
     }
@@ -42,7 +41,7 @@ public class UserController {
     }
 
     @PutMapping("/block")
-    public ResponseEntity<UserDto> blockUser(@RequestParam Long userId) throws UserNotFoundException {
+    public ResponseEntity<UserDto> blockUser(@RequestParam Long userId) throws InvalidUserIdException {
         User user = userDbService.findUserById(userId);
         User savedUser = userDbService.blockUser(user);
         return ResponseEntity.ok(userMapper.mapToUserDto(savedUser));
@@ -56,7 +55,7 @@ public class UserController {
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> deleteUser(@RequestParam Long userId) throws UserNotFoundException, NotEmptyWalletException {
+    public ResponseEntity<Void> deleteUser(@RequestParam Long userId) throws InvalidUserIdException, NotEmptyWalletException {
         userDbService.deleteUser(userId);
         return ResponseEntity.ok().build();
     }
