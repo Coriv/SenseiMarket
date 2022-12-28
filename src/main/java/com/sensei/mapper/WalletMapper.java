@@ -1,14 +1,12 @@
 package com.sensei.mapper;
 
 import com.sensei.dto.WalletDto;
+import com.sensei.entity.CashWallet;
 import com.sensei.entity.Trade;
 import com.sensei.entity.Wallet;
 import com.sensei.entity.WalletCrypto;
 import com.sensei.exception.InvalidUserIdException;
-import com.sensei.repository.TradeDao;
-import com.sensei.repository.UserDao;
-import com.sensei.repository.WalletCryptoDao;
-import com.sensei.repository.WalletDao;
+import com.sensei.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +21,7 @@ public class WalletMapper {
     private final UserDao userDao;
     private final WalletCryptoDao walletCryptoDao;
     private final TradeDao tradeDao;
+    private final CashWalletDao cashWalletDao;
     public Wallet mapToWallet(WalletDto walletDto) throws InvalidUserIdException {
         Wallet wallet;
         Long walletId = walletDto.getId();
@@ -51,6 +50,7 @@ public class WalletMapper {
                 .trades(wallet.getTrades().stream()
                         .map(Trade::getId)
                         .collect(Collectors.toList()))
+                .cashWalletId(wallet.getCashWallet().getId())
                 .build();
     }
 }

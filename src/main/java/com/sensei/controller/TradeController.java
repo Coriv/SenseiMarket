@@ -2,10 +2,8 @@ package com.sensei.controller;
 
 import com.sensei.dto.TradeDto;
 import com.sensei.entity.Trade;
-import com.sensei.exception.CryptoPairDoesNotFoundException;
-import com.sensei.exception.InvalidUserIdException;
-import com.sensei.exception.TradeNotFoundException;
-import com.sensei.exception.TransactionDoesNotBellowToAnyWalletException;
+import com.sensei.entity.TransactionType;
+import com.sensei.exception.*;
 import com.sensei.mapper.TradeMapper;
 import com.sensei.service.TradeDbService;
 import lombok.RequiredArgsConstructor;
@@ -39,16 +37,19 @@ public class TradeController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createTrade(@RequestBody TradeDto tradeDto) throws CryptoPairDoesNotFoundException, TransactionDoesNotBellowToAnyWalletException {
+    public ResponseEntity<Void> createTrade(@RequestBody TradeDto tradeDto) throws CryptocurrencyNotFoundException, NotEnoughFoundsException, UnknownErrorException, WalletNotFoundException {
         Trade trade = tradeMapper.mapToTrade(tradeDto);
-        tradeDbService.createNewTrade(trade);
+        if (trade.getTransactionType().equals(TransactionType.BUY)) {
+            tradeDbService.createNewTradeBuy(trade);
+        } else {
+            tradeDbService.createNewTradeSell(trade);
+        }
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping
-    public ResponseEntity<Void> deleteTrade(@RequestParam Long tradeId) throws TradeNotFoundException {
+    @DeleteMapping("/{tradeId}/delete")
+    public ResponseEntity<Void> deleteTrade(@PathVariable Long tradeId) throws TradeNotFoundException, UnknownErrorException {
         tradeDbService.deleteTrade(tradeId);
         return ResponseEntity.ok().build();
     }
-
 }

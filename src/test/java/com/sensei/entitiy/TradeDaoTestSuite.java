@@ -1,10 +1,7 @@
 package com.sensei.entitiy;
 
 import com.sensei.entity.*;
-import com.sensei.repository.CryptoPairDao;
-import com.sensei.repository.TradeDao;
-import com.sensei.repository.UserDao;
-import com.sensei.repository.WalletDao;
+import com.sensei.repository.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,7 +21,13 @@ public class TradeDaoTestSuite {
     @Autowired
     private CryptoPairDao cryptoPairDao;
     @Autowired
+    private WalletDao walletDao;
+    @Autowired
     private UserDao userDao;
+    @Autowired
+    private CryptocurrencyDao cryptocurrencyDao;
+    @Autowired
+    private CashWalletDao cashWalletDao;
 
     @Test
     void addingNewTradeTest() {
@@ -41,12 +44,9 @@ public class TradeDaoTestSuite {
         user.setIdCard("AZC2133");
 
         Wallet wallet = new Wallet();
-        CryptoPair cryptoPair = new CryptoPair();
-        cryptoPair.setBidPrice(BigDecimal.valueOf(1000));
-        cryptoPair.setAskPrice(BigDecimal.valueOf(103));
-        cryptoPair.setSymbol("MATICUSDT");
-        cryptoPair.setVolume(BigDecimal.valueOf(12032131));
-        cryptoPair.setPriceChangePercent(BigDecimal.valueOf(12));
+        Cryptocurrency bitcoin = new Cryptocurrency();
+        bitcoin.setName("Bitcoin");
+        bitcoin.setSymbol("BTC");
 
         wallet.setUser(user);
         user.setWallet(wallet);
@@ -54,30 +54,50 @@ public class TradeDaoTestSuite {
         Trade trade = new Trade();
         trade.setTransactionType(TransactionType.BUY);
         trade.setWallet(wallet);
-        trade.setCryptoPair(cryptoPair);
+        trade.setCryptocurrency(bitcoin);
         trade.setPrice(BigDecimal.valueOf(3424));
         trade.setQuantity(BigDecimal.valueOf(344));
         trade.setValue(trade.getPrice().multiply(trade.getQuantity()));
         trade.setOpen(false);
 
-        cryptoPair.setTrades(Arrays.asList(trade));
+        bitcoin.setTrades(Arrays.asList(trade));
         wallet.setTrades(Arrays.asList(trade));
 
+        Cryptocurrency cryptocurrency = cryptocurrencyDao.findBySymbol("BTC").get();
+        Cryptocurrency cryptocurrency2 = cryptocurrencyDao.findBySymbol("ETH").get();
+
+        WalletCrypto walletCrypto = new WalletCrypto();
+        walletCrypto.setWallet(wallet);
+        walletCrypto.setQuantity(BigDecimal.valueOf(34));
+        walletCrypto.setCryptocurrency(cryptocurrency);
+        WalletCrypto walletCrypto2 = new WalletCrypto();
+        walletCrypto2.setWallet(wallet);
+        walletCrypto2.setQuantity(BigDecimal.valueOf(34535));
+        walletCrypto2.setCryptocurrency(cryptocurrency2);
+        wallet.setCryptosList(Arrays.asList(walletCrypto, walletCrypto2));
+
+        CashWallet cashWallet = new CashWallet();
+        cashWallet.setQuantity(BigDecimal.valueOf(100));
+        cashWallet.setWallet(wallet);
+        wallet.setCashWallet(cashWallet);
+
         //When
-        cryptoPairDao.save(cryptoPair);
+        //cashWalletDao.save(cashWallet);
+        cryptocurrencyDao.save(bitcoin);
         userDao.save(user);
-        //walletDao.save(wallet);
+
+        walletDao.save(wallet);
         tradeDao.save(trade);
         Optional<Trade> resultTrade = tradeDao.findById(trade.getId());
         //Then
         assertTrue(resultTrade.isPresent());
-        assertEquals(resultTrade.get().getCryptoPair().getSymbol(), "BTCUSDT");
-        assertEquals(resultTrade.get().getValue().doubleValue(), 341.00);
+        assertEquals(resultTrade.get().getCryptocurrency().getSymbol(), "BTC");
+        assertEquals(resultTrade.get().getValue().doubleValue(), 1177856.00);
         assertEquals(resultTrade.get().getPrice().doubleValue(), 3424.0);
         assertEquals(resultTrade.get().getQuantity().doubleValue(), 344.0);
         //CleanUp
         //tradeDao.deleteById(trade.getId());
         //walletDao.deleteById(wallet.getId());
-        //cryptoPairDao.deleteById(cryptoPair.getSymbol());
+        //cryptoPairDao.deleteById(cryptoPrice.getSymbol());
     }
 }

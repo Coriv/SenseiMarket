@@ -20,15 +20,18 @@ public class Trade {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST,
+            fetch = FetchType.LAZY,
+            optional = false)
     @NotNull
     private Wallet wallet;
 
     @NotNull
     private TransactionType transactionType;
-    @ManyToOne
-    @NotNull
-    private CryptoPair cryptoPair;
+
+    @ManyToOne(fetch = FetchType.LAZY,
+            optional = false)
+    private Cryptocurrency cryptocurrency;
 
     @PositiveOrZero
     private BigDecimal quantity;

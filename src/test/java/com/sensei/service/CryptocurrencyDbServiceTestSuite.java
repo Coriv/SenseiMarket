@@ -34,7 +34,7 @@ class CryptocurrencyDbServiceTestSuite {
         Cryptocurrency bitcoin = new Cryptocurrency();
         bitcoin.setSymbol("BTC");
         bitcoin.setName("Bitcoin");
-        when(cryptoDao.findById("BTC")).thenReturn(Optional.of(bitcoin));
+        when(cryptoDao.findBySymbol("BTC")).thenReturn(Optional.of(bitcoin));
         //When
         Cryptocurrency resultCrypto = dbService.findCryptocurrencyBySymbol("BTC");
         //Then

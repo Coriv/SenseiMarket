@@ -1,6 +1,7 @@
 package com.sensei.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 
@@ -18,14 +19,16 @@ public class WalletCrypto {
 
     @Column
     @PositiveOrZero
-    private BigDecimal quantity;
+    private BigDecimal quantity = BigDecimal.valueOf(0);
 
-    @ManyToOne(cascade = CascadeType.PERSIST,
+    @ManyToOne(cascade = CascadeType.MERGE,
             fetch = FetchType.LAZY)
     @JoinColumn(name = "wallet_id")
+    @NotNull
     private Wallet wallet;
 
     @ManyToOne
     @JoinColumn(name = "cryptocurrency_id")
+    @NotNull
     private Cryptocurrency cryptocurrency;
 }

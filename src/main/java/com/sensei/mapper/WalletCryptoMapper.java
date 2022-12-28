@@ -2,8 +2,8 @@ package com.sensei.mapper;
 
 import com.sensei.dto.WalletCryptoDto;
 import com.sensei.entity.WalletCrypto;
-import com.sensei.exception.WalletCryptoDoesNotBelowToAnyWallet;
-import com.sensei.exception.WalletCryptoDoestNotHaveCorrectCrypto;
+import com.sensei.exception.CryptocurrencyNotFoundException;
+import com.sensei.exception.WalletNotFoundException;
 import com.sensei.repository.CryptocurrencyDao;
 import com.sensei.repository.WalletCryptoDao;
 import com.sensei.repository.WalletDao;
@@ -21,7 +21,7 @@ public class WalletCryptoMapper {
     private final WalletDao walletDao;
     private final CryptocurrencyDao cryptocurrencyDao;
 
-    public WalletCrypto mapToWalletCrypto(WalletCryptoDto walletCryptoDto) throws WalletCryptoDoesNotBelowToAnyWallet, WalletCryptoDoestNotHaveCorrectCrypto {
+    public WalletCrypto mapToWalletCrypto(WalletCryptoDto walletCryptoDto) throws WalletNotFoundException, CryptocurrencyNotFoundException {
         WalletCrypto walletCrypto;
         if (walletCryptoDto.getId() != null) {
             walletCrypto = walletCryptoDao.findById(walletCryptoDto.getId()).orElse(new WalletCrypto());
@@ -29,8 +29,8 @@ public class WalletCryptoMapper {
             walletCrypto = new WalletCrypto();
         }
         walletCrypto.setId(walletCryptoDto.getId());
-        walletCrypto.setWallet(walletDao.findById(walletCryptoDto.getWalletId()).orElseThrow(WalletCryptoDoesNotBelowToAnyWallet::new));
-        walletCrypto.setCryptocurrency(cryptocurrencyDao.findById(walletCryptoDto.getCryptocurrencySymbol()).orElseThrow(WalletCryptoDoestNotHaveCorrectCrypto::new));
+        walletCrypto.setWallet(walletDao.findById(walletCryptoDto.getWalletId()).orElseThrow(WalletNotFoundException::new));
+        walletCrypto.setCryptocurrency(cryptocurrencyDao.findBySymbol(walletCryptoDto.getCryptocurrencySymbol()).orElseThrow(CryptocurrencyNotFoundException::new));
         walletCrypto.setQuantity(walletCryptoDto.getQuantity());
 
         return walletCrypto;

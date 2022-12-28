@@ -24,7 +24,8 @@ public class Wallet {
     @NotNull
     private boolean active = false;
 
-    @OneToOne(mappedBy = "wallet")
+    @OneToOne(mappedBy = "wallet",
+            optional = false)
     private User user;
 
     @OneToMany(targetEntity = WalletCrypto.class,
@@ -36,7 +37,11 @@ public class Wallet {
     @OneToMany(targetEntity = Trade.class,
             mappedBy = "wallet",
             cascade = CascadeType.PERSIST,
-            fetch = FetchType.EAGER)
+            fetch = FetchType.LAZY)
     private List<Trade> trades = new ArrayList<>();
+
+    @OneToOne(cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
+    private CashWallet cashWallet;
 
 }

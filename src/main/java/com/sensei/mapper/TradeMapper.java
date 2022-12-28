@@ -1,37 +1,36 @@
 package com.sensei.mapper;
 
 import com.sensei.dto.TradeDto;
-import com.sensei.entity.CryptoPair;
+import com.sensei.entity.Cryptocurrency;
 import com.sensei.entity.Trade;
 import com.sensei.entity.Wallet;
-import com.sensei.exception.CryptoPairDoesNotFoundException;
-import com.sensei.exception.TransactionDoesNotBellowToAnyWalletException;
-import com.sensei.repository.CryptoPairDao;
+import com.sensei.exception.CryptocurrencyNotFoundException;
+import com.sensei.exception.WalletNotFoundException;
+import com.sensei.repository.CryptocurrencyDao;
 import com.sensei.repository.TradeDao;
 import com.sensei.repository.WalletDao;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class TradeMapper {
     private final TradeDao tradeDao;
-    private final CryptoPairDao cryptoPairDao;
+    private final CryptocurrencyDao cryptocurrencyDao;
     private final WalletDao walletDao;
 
-    public Trade mapToTrade(TradeDto tradeDto) throws CryptoPairDoesNotFoundException, TransactionDoesNotBellowToAnyWalletException {
+    public Trade mapToTrade(TradeDto tradeDto) throws WalletNotFoundException, CryptocurrencyNotFoundException {
         Trade trade;
         if (tradeDto.getId() != null) {
             trade = tradeDao.findById(tradeDto.getId()).orElse(new Trade());
         } else {
             trade = new Trade();
         }
-        CryptoPair cryptoPair = cryptoPairDao.findBySymbol(tradeDto.getCryptoPair()).orElseThrow(CryptoPairDoesNotFoundException::new);
-        trade.setCryptoPair(cryptoPair);
+        Cryptocurrency cryptocurrency = cryptocurrencyDao.findBySymbol(tradeDto.getCryptoSymbol()).orElseThrow(CryptocurrencyNotFoundException::new);
+        trade.setCryptocurrency(cryptocurrency);
         trade.setTransactionType(tradeDto.getTransactionType());
         trade.setQuantity(tradeDto.getQuantity());
         trade.setPrice(tradeDto.getPrice());
@@ -39,7 +38,7 @@ public class TradeMapper {
         trade.setOpen(trade.isOpen());
         trade.setOpenDate(tradeDto.getOpenTime());
         trade.setCloseDate(tradeDto.getCloseTime());
-        Wallet wallet = walletDao.findById(tradeDto.getWalletId()).orElseThrow(TransactionDoesNotBellowToAnyWalletException::new);
+        Wallet wallet = walletDao.findById(tradeDto.getWalletId()).orElseThrow(WalletNotFoundException::new);
         trade.setWallet(wallet);
 
         return trade;
@@ -48,7 +47,7 @@ public class TradeMapper {
     public TradeDto mapToTradeDto(Trade trade) {
         return TradeDto.builder()
                 .id(trade.getId())
-                .cryptoPair(trade.getCryptoPair().getSymbol())
+                .cryptoSymbol(trade.getCryptocurrency().getSymbol())
                 .transactionType(trade.getTransactionType())
                 .quantity(trade.getQuantity())
                 .price(trade.getPrice())

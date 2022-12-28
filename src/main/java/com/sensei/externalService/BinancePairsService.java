@@ -2,6 +2,8 @@ package com.sensei.externalService;
 
 import com.sensei.config.AdminConfig;
 import com.sensei.dto.CryptoPairDto;
+import com.sensei.entity.Cryptocurrency;
+import com.sensei.exception.EmptyCryptocurrencyDatabaseException;
 import com.sensei.service.CryptocurrencyDbService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,22 +22,26 @@ public class BinancePairsService {
     private final RestTemplate restTemplate;
     private final CryptocurrencyDbService cryptoDbService;
     private final AdminConfig adminConfig;
-    public List<CryptoPairDto> getPairLastPrice() {
+    public List<CryptoPairDto> getPairLastPrice() throws EmptyCryptocurrencyDatabaseException {
         CryptoPairDto[] pairs = restTemplate.getForObject(buildUrl(), CryptoPairDto[].class);
         return Arrays.asList(pairs);
     }
 
-    private URI buildUrl() {
+    private URI buildUrl() throws EmptyCryptocurrencyDatabaseException {
         return UriComponentsBuilder.fromHttpUrl(adminConfig.getBinanceApi())
                 .queryParam("symbols", buildSymbolsParam())
                 .encode(StandardCharsets.UTF_8)
                 .build()
                 .toUri();
     }
-    private String buildSymbolsParam() {
-        String symbols = cryptoDbService.findAll().stream()
+    private String buildSymbolsParam() throws EmptyCryptocurrencyDatabaseException {
+        List<Cryptocurrency> cryptos = cryptoDbService.findAll();
+        if(cryptos.size() == 0) {
+            throw new EmptyCryptocurrencyDatabaseException();
+        }
+        String symbols = cryptos.stream()
                 .map(crypto -> crypto.getSymbol())
-                .map(symbol -> "\"" + symbol + "USDT" + "\",")
+                .map(symbol -> "\"" + symbol + adminConfig.getStablecoin() + "\",")
         .reduce("[", (partString, element) -> partString += element);
         String result = symbols.substring(0, symbols.length()-1);
         return result + "]";

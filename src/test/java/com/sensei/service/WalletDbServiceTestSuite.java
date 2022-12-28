@@ -5,6 +5,8 @@ import com.sensei.entity.User;
 import com.sensei.entity.Wallet;
 import com.sensei.entity.WalletCrypto;
 import com.sensei.exception.InvalidUserIdException;
+import com.sensei.exception.UserNotVerifyException;
+import com.sensei.exception.WalletAlreadyExistException;
 import com.sensei.exception.WalletNotFoundException;
 import com.sensei.repository.UserDao;
 import com.sensei.repository.WalletDao;
@@ -38,7 +40,7 @@ class WalletDbServiceTestSuite {
     @Mock
     private WalletDao walletDao;
     @Test
-    void createWalletTest() throws InvalidUserIdException {
+    void createWalletTest() throws InvalidUserIdException, WalletAlreadyExistException, UserNotVerifyException {
         User user = new User();
         user.setFirstName("Sebastian");
         user.setLastName("Boron");
@@ -49,7 +51,7 @@ class WalletDbServiceTestSuite {
 
         when(userDao.findById(any())).thenReturn(Optional.of(user));
         when(walletDao.save(any(Wallet.class))).thenReturn(wallet);
-        //When
+        // When
         Wallet resultWallet = dbService.createWallet(1L);
         //Then
         assertTrue(resultWallet.isActive());
@@ -67,12 +69,13 @@ class WalletDbServiceTestSuite {
         walletCrypto.setQuantity(new BigDecimal("1200"));
         walletCrypto.setWallet(wallet);
         wallet.getCryptosList().add(walletCrypto);
+        String[] symbols = {"ALL"};
 
         when(walletDao.findById(any())).thenReturn(Optional.of(wallet));
         //When
-        List<WalletCrypto> cryptos = dbService.getListOfCrypto(wallet.getId());
+        List<WalletCrypto> cryptos = dbService.getCryptosBySymbol(wallet.getId(), symbols);
         //Then
-        assertEquals(cryptos.size(), 1);
+        assertEquals(cryptos.size(), 2);
         assertEquals(cryptos.get(0).getQuantity(), new BigDecimal("1200"));
         assertEquals(cryptos.get(0).getCryptocurrency().getSymbol(), "BTC");
 

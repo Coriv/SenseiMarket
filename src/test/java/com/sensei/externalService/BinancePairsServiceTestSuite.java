@@ -1,6 +1,7 @@
 package com.sensei.externalService;
 
 import com.sensei.dto.CryptoPairDto;
+import com.sensei.exception.EmptyCryptocurrencyDatabaseException;
 import com.sensei.externalService.BinancePairsService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ class BinancePairsServiceTestSuite {
     private BinancePairsService binanceService;
 
     @Test
-    void getForObject() {
+    void getForObject() throws EmptyCryptocurrencyDatabaseException {
         List<CryptoPairDto> pair = binanceService.getPairLastPrice();
         assertEquals(pair.get(0).getSymbol(), "BTCUSDT");
         System.out.println(pair);

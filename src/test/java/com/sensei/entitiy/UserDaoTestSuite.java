@@ -74,8 +74,8 @@ public class UserDaoTestSuite {
         //Then
         Assertions.assertTrue(getUser.isPresent());
         //CleanUp
-        userDao.deleteById(user.getId());
-        cryptocurrencyDao.deleteById(crypto1.getSymbol());
-        cryptocurrencyDao.deleteById(crypto2.getSymbol());
+        //userDao.deleteById(user.getId());
+        //cryptocurrencyDao.deleteById(crypto1.getSymbol());
+        //cryptocurrencyDao.deleteById(crypto2.getSymbol());
     }
 }

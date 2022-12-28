@@ -15,8 +15,12 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CryptoPair {
+public class CryptoPrice {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @NotNull
     private String symbol;
     @PositiveOrZero
@@ -27,8 +31,8 @@ public class CryptoPair {
     private BigDecimal priceChangePercent;
     @PositiveOrZero
     private BigDecimal volume;
-    @OneToMany(targetEntity = Trade.class,
-            mappedBy = "cryptoPair",
-            fetch = FetchType.LAZY)
-    private List<Trade> trades = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @NotNull
+    private Cryptocurrency crypto;
 }

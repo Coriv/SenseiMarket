@@ -16,7 +16,7 @@ public class CryptocurrencyDbService {
     private final CryptocurrencyDao cryptocurrencyDao;
 
     public Cryptocurrency findCryptocurrencyBySymbol(String symbol) throws CryptocurrencyNotFoundException {
-        return cryptocurrencyDao.findById(symbol).orElseThrow(CryptocurrencyNotFoundException::new);
+        return cryptocurrencyDao.findBySymbol(symbol).orElseThrow(CryptocurrencyNotFoundException::new);
     }
 
     public List<Cryptocurrency> findAll() {
@@ -28,10 +28,10 @@ public class CryptocurrencyDbService {
     }
 
     public void deleteBySymbol(String symbol) throws CryptocurrencyNotFoundException, CryptoIsObjectOfTradingException {
-        Cryptocurrency crypto = cryptocurrencyDao.findById(symbol).orElseThrow(CryptocurrencyNotFoundException::new);
+        Cryptocurrency crypto = cryptocurrencyDao.findBySymbol(symbol).orElseThrow(CryptocurrencyNotFoundException::new);
         if (!crypto.getWalletCryptoList().isEmpty()) {
             throw new CryptoIsObjectOfTradingException();
         }
-        cryptocurrencyDao.deleteById(symbol);
+        cryptocurrencyDao.deleteBySymbol(symbol);
     }
 }

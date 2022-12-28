@@ -40,7 +40,8 @@ public class TransactionHistory {
     @PositiveOrZero
     @Column(updatable = false)
     private BigDecimal value;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY,
+            optional = false)
     @JoinColumn(updatable = false)
     private User user;
 

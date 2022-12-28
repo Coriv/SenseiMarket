@@ -6,6 +6,8 @@ import com.sensei.exception.InvalidUserIdException;
 import com.sensei.exception.NotEmptyWalletException;
 import com.sensei.repository.UserDao;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +18,6 @@ import java.util.stream.Collectors;
 public class UserDbService {
 
     private final UserDao userDao;
-
     public User findUserById(Long id) throws InvalidUserIdException {
         return userDao.findById(id).orElseThrow(InvalidUserIdException::new);
     }

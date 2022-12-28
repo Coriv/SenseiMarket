@@ -8,6 +8,7 @@ import lombok.Data;
 @Builder
 public class CryptocurrencyDto {
 
+    private Long id;
     @NotNull
     private String symbol;
     private String name;

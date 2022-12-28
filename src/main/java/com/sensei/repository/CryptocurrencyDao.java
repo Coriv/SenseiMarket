@@ -10,10 +10,9 @@ import java.util.Optional;
 
 @Transactional
 @Repository
-public interface CryptocurrencyDao extends CrudRepository<Cryptocurrency, String> {
+public interface CryptocurrencyDao extends CrudRepository<Cryptocurrency, Long> {
 
-    @Override
-    Optional<Cryptocurrency> findById(String symbol);
+    Optional<Cryptocurrency> findBySymbol(String symbol);
 
     @Override
     List<Cryptocurrency> findAll();
@@ -21,6 +20,5 @@ public interface CryptocurrencyDao extends CrudRepository<Cryptocurrency, String
     @Override
     Cryptocurrency save(Cryptocurrency cryptocurrency);
 
-    @Override
-    void deleteById(String symbol);
+    void deleteBySymbol(String symbol);
 }
