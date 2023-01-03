@@ -17,12 +17,7 @@ public class CryptocurrencyMapper {
     private final CryptocurrencyDao cryptocurrencyDao;
 
     public Cryptocurrency mapToCryptocurrency(CryptocurrencyDto cryptocurrencyDto) {
-        Cryptocurrency cryptocurrency;
-        if (cryptocurrencyDto.getSymbol() != null) {
-            cryptocurrency = cryptocurrencyDao.findBySymbol(cryptocurrencyDto.getSymbol()).orElse(new Cryptocurrency());
-        } else {
-            cryptocurrency = new Cryptocurrency();
-        }
+        Cryptocurrency cryptocurrency = cryptocurrencyDao.findBySymbol(cryptocurrencyDto.getSymbol()).orElse(new Cryptocurrency());
         cryptocurrency.setSymbol(cryptocurrencyDto.getSymbol());
         cryptocurrency.setName(cryptocurrencyDto.getName());
         return cryptocurrency;

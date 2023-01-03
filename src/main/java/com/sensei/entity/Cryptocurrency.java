@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
@@ -14,11 +15,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Cryptocurrency {
-
+    public Cryptocurrency(String symbol, String name) {
+        this.symbol = symbol;
+        this.name = name;
+    }
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @NotNull
     @Column(unique = true)
     private String symbol;
@@ -26,13 +27,6 @@ public class Cryptocurrency {
     @NotNull
     @Column(unique = true)
     private String name;
-
-    @OneToMany(targetEntity = CryptoPrice.class,
-            cascade = CascadeType.REMOVE,
-            fetch = FetchType.LAZY,
-            mappedBy = "crypto")
-    private List<CryptoPrice> cryprosPrice;
-
 
     @OneToMany(targetEntity = WalletCrypto.class,
             mappedBy = "cryptocurrency",
@@ -44,4 +38,18 @@ public class Cryptocurrency {
             fetch = FetchType.LAZY)
     private List<Trade> trades = new ArrayList<>();
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Cryptocurrency)) return false;
+
+        Cryptocurrency that = (Cryptocurrency) o;
+
+        return symbol.equals(that.symbol);
+    }
+
+    @Override
+    public int hashCode() {
+        return symbol.hashCode();
+    }
 }

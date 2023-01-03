@@ -33,6 +33,7 @@ public class UserMapper {
         user.setDateOfJoin(userDto.getDateOfJoin());
         user.setEmail(userDto.getEmail());
         user.setActive(userDto.isActive());
+        user.setNotification(userDto.isNotification());
         return user;
     }
 
@@ -53,6 +54,7 @@ public class UserMapper {
                 .email(user.getEmail())
                 .active(user.isActive())
                 .walletId(walletId)
+                .notification(user.isNotification())
                 .build();
     }
 

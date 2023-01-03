@@ -20,8 +20,8 @@ public class CashWallet {
 
     private String currency = "$ USD";
 
-    @OneToOne(cascade = CascadeType.MERGE,
-            fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.PERSIST,
+            fetch = FetchType.EAGER)
     private Wallet wallet;
 
     @PositiveOrZero

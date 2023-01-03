@@ -16,13 +16,14 @@ public class TransactionHistoryDto {
     @NotNull
     private final TransactionType transactionType;
     @NotNull
-    private final String cryptoPair;
+    private final String cryptocurrency;
     @PositiveOrZero
     private final BigDecimal quantity;
     @PositiveOrZero
     private final BigDecimal price;
     @PositiveOrZero
     private final BigDecimal value;
+    @NotNull
     private final Long userId;
     @NotNull
     private final LocalDateTime transactionTime;

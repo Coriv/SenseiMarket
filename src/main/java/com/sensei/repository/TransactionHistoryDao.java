@@ -15,7 +15,7 @@ public interface TransactionHistoryDao extends CrudRepository<TransactionHistory
     @Override
     TransactionHistory save(TransactionHistory transactionHistory);
 
-    List<TransactionHistory> findAllByCryptoPair(String cryptoPair);
+    List<TransactionHistory> findAllByCryptocurrency(String symbol);
 
     List<TransactionHistory> findAllByUserId(Long userId);
 }

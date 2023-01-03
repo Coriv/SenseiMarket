@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Transactional
 @Repository
-public interface CryptocurrencyDao extends CrudRepository<Cryptocurrency, Long> {
+public interface CryptocurrencyDao extends CrudRepository<Cryptocurrency, String> {
 
     Optional<Cryptocurrency> findBySymbol(String symbol);
 

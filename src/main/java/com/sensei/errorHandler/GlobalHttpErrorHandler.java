@@ -37,20 +37,13 @@ public class GlobalHttpErrorHandler {
 
     @ExceptionHandler(NotEnoughFoundsException.class)
     public ResponseEntity<Object> notEnoughFoundHandler(NotEnoughFoundsException e) {
-        return new ResponseEntity<>("You don't have sufficient found to complete this transaction", HttpStatus.CONFLICT);
+        return new ResponseEntity<>("You don't have enough found to complete this transaction", HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(TradeNotFoundException.class)
     public ResponseEntity<Object> tradeNotFoundHandler(TradeNotFoundException e) {
         return new ResponseEntity<>("Trade with given ID does not exist", HttpStatus.BAD_REQUEST);
     }
-
-    @ExceptionHandler(UnknownErrorException.class)
-    public ResponseEntity<Object> unknownErrorHandler(UnknownErrorException e) {
-        return new ResponseEntity<>("Something went wrong." +
-                " If the problem persist, please contact support", HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
     @ExceptionHandler(UserNotVerifyException.class)
     public ResponseEntity<Object> userNotVerifyHandler(UserNotVerifyException e) {
         return new ResponseEntity<>("Verify user PESEL and ID card first to create wallet", HttpStatus.BAD_REQUEST);
@@ -68,6 +61,31 @@ public class GlobalHttpErrorHandler {
 
     @ExceptionHandler(WalletNotFoundException.class)
     public ResponseEntity<Object> walletNotFoundHandler(WalletNotFoundException e) {
-        return new ResponseEntity<>("Wallet with given ID doest not exist", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Wallet with given ID doest not exist.", HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(TradeWithYourselfException.class)
+    public ResponseEntity<Object> tradeWithYourselfHandler(TradeWithYourselfException e) {
+        return new ResponseEntity<>("You can not trade with yourself.", HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(InvalidUsernameException.class)
+    public ResponseEntity<Object> invalidUsernameHandler(TradeWithYourselfException e) {
+        return new ResponseEntity<>("Invalid username", HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(HistoricalTransactionNotFoundException.class)
+    public ResponseEntity<Object> historicalTransactionNotFoundHandler(HistoricalTransactionNotFoundException e) {
+        return new ResponseEntity<>("Transaction with given ID does not exist in database", HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(OfferIsCloseException.class)
+    public ResponseEntity<Object> offerIsCloseHandler(OfferIsCloseException e) {
+        return new ResponseEntity<>("This offer is closed.", HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(CashWalletNotFoundException.class)
+    public ResponseEntity<Object> cashWalletNotFoundHandler(CryptocurrencyNotFoundException e) {
+        return new ResponseEntity<>("Cash Wallet with given ID doest not exist.", HttpStatus.NOT_FOUND);
     }
 }

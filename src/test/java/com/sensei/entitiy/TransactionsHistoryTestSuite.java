@@ -1,8 +1,9 @@
 package com.sensei.entitiy;
 
+import com.sensei.entity.User;
 import com.sensei.entity.TransactionHistory;
 import com.sensei.entity.TransactionType;
-import com.sensei.entity.User;
+import com.sensei.exception.HistoricalTransactionNotFoundException;
 import com.sensei.repository.TransactionHistoryDao;
 import com.sensei.repository.UserDao;
 import org.junit.jupiter.api.Test;
@@ -25,7 +26,7 @@ public class TransactionsHistoryTestSuite {
     private UserDao userDao;
 
     @Test
-    public void addingTransactionToHistoryTest() {
+    public void addingTransactionToHistoryTest() throws HistoricalTransactionNotFoundException {
         //Given
         User user = new User();
         user.setFirstName("Sebastian");
@@ -37,7 +38,7 @@ public class TransactionsHistoryTestSuite {
         user.setEmail("sebastian@kodilla.com");
         TransactionHistory transaction = new TransactionHistory();
         transaction.setTransactionType(TransactionType.BUY);
-        transaction.setCryptoPair("BTCETH");
+        transaction.setCryptocurrency("BTCETH");
         transaction.setPrice(BigDecimal.valueOf(123));
         transaction.setQuantity(BigDecimal.valueOf(2134));
         transaction.setValue(transaction.getQuantity().multiply(transaction.getPrice()));
@@ -47,12 +48,11 @@ public class TransactionsHistoryTestSuite {
         //When
         userDao.save(user);
         transactionHistoryDao.save(transaction);
-        Optional<TransactionHistory> resultTransaction = transactionHistoryDao.findById(transaction.getId());
+        TransactionHistory resultTransaction = transactionHistoryDao.findById(transaction.getId()).orElseThrow(HistoricalTransactionNotFoundException::new);
         //Then
-        assertTrue(resultTransaction.isPresent());
-        assertEquals(resultTransaction.get().getPrice().doubleValue(), 123.00);
-        assertEquals(resultTransaction.get().getCryptoPair(), "BTCETH");
-        assertEquals(resultTransaction.get().getTransactionType(), TransactionType.BUY);
+        assertEquals(resultTransaction.getPrice().doubleValue(), 123.00);
+        assertEquals(resultTransaction.getCryptocurrency(), "BTCETH");
+        assertEquals(resultTransaction.getTransactionType(), TransactionType.BUY);
         //CleanUp
         userDao.deleteById(user.getId());
     }

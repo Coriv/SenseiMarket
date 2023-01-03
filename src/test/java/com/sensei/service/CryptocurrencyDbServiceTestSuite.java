@@ -4,7 +4,9 @@ import com.sensei.entity.Cryptocurrency;
 import com.sensei.entity.WalletCrypto;
 import com.sensei.exception.CryptoIsObjectOfTradingException;
 import com.sensei.exception.CryptocurrencyNotFoundException;
+import com.sensei.mapper.UserMapper;
 import com.sensei.repository.CryptocurrencyDao;
+import com.sensei.repository.UserDao;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -27,6 +29,10 @@ class CryptocurrencyDbServiceTestSuite {
     private CryptocurrencyDbService dbService;
     @Mock
     private CryptocurrencyDao cryptoDao;
+    @Mock
+    private UserDao userDao;
+    @Mock
+    UserMapper userMapper;
 
     @Test
     void findCryptocurrencyBySymbolTest() throws CryptocurrencyNotFoundException {
@@ -70,6 +76,8 @@ class CryptocurrencyDbServiceTestSuite {
         bitcoin.setName("Bitcoin");
 
         when(cryptoDao.save(any(Cryptocurrency.class))).thenReturn(bitcoin);
+//        when(userDao.findAll()).thenReturn(null);
+//        when(userMapper.mapToUserDtoList(any())).thenReturn(null);
         //When
         Cryptocurrency resultCrypto = dbService.add(bitcoin);
         //Then
@@ -87,7 +95,7 @@ class CryptocurrencyDbServiceTestSuite {
         walletCrypto.setQuantity(new BigDecimal("213"));
         bitcoin.setWalletCryptoList(Arrays.asList(walletCrypto));
 
-        when(cryptoDao.findById(any())).thenReturn(Optional.of(bitcoin));
+        when(cryptoDao.findBySymbol(any())).thenReturn(Optional.of(bitcoin));
         //When&Then
         assertThrows(CryptoIsObjectOfTradingException.class, () -> dbService.deleteBySymbol("BTC"));
     }

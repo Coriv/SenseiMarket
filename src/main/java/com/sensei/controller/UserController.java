@@ -6,6 +6,7 @@ import com.sensei.exception.InvalidUserIdException;
 import com.sensei.exception.NotEmptyWalletException;
 import com.sensei.mapper.UserMapper;
 import com.sensei.service.UserDbService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -29,28 +30,28 @@ public class UserController {
 
     @GetMapping("/{userId}")
     public ResponseEntity<UserDto> fetchUserById(@PathVariable Long userId) throws InvalidUserIdException {
-        User user = userDbService.findUserById(userId);
+        var user = userDbService.findUserById(userId);
         return ResponseEntity.ok(userMapper.mapToUserDto(user));
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> createUser(@RequestBody UserDto userDto) {
-        User user = userMapper.mapToUser(userDto);
+    public ResponseEntity<Void> createUser(@Valid @RequestBody UserDto userDto) {
+        var user = userMapper.mapToUser(userDto);
         userDbService.save(user);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/block")
     public ResponseEntity<UserDto> blockUser(@RequestParam Long userId) throws InvalidUserIdException {
-        User user = userDbService.findUserById(userId);
-        User savedUser = userDbService.blockUser(user);
+        var user = userDbService.findUserById(userId);
+        var savedUser = userDbService.blockUser(user);
         return ResponseEntity.ok(userMapper.mapToUserDto(savedUser));
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDto> updateUserData(@RequestBody UserDto userDto) {
-        User user = userMapper.mapToUser(userDto);
-        User savedUser = userDbService.save(user);
+    public ResponseEntity<UserDto> updateUserData(@Valid @RequestBody UserDto userDto) {
+        var user = userMapper.mapToUser(userDto);
+        var savedUser = userDbService.save(user);
         return ResponseEntity.ok(userMapper.mapToUserDto(savedUser));
     }
 
@@ -58,5 +59,17 @@ public class UserController {
     public ResponseEntity<Void> deleteUser(@RequestParam Long userId) throws InvalidUserIdException, NotEmptyWalletException {
         userDbService.deleteUser(userId);
         return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{userId}/notification")
+    public ResponseEntity<String> registerToNewCryptocurrencyNotification(@PathVariable Long userId) throws InvalidUserIdException {
+        var info = userDbService.registerForNotification(userId);
+        return ResponseEntity.ok(info);
+    }
+
+    @PutMapping("/{userId}/unsubscribe")
+    public ResponseEntity<String> unregisterFromNotification(@PathVariable Long userId) throws InvalidUserIdException {
+        var info = userDbService.unregisterForNotification(userId);
+        return ResponseEntity.ok(info);
     }
 }

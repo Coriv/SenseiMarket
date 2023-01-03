@@ -1,11 +1,12 @@
 package com.sensei.externalService;
 
 import com.sensei.config.AdminConfig;
-import com.sensei.dto.CryptoPairDto;
+import com.sensei.dto.CryptoPriceDto;
 import com.sensei.entity.Cryptocurrency;
 import com.sensei.exception.EmptyCryptocurrencyDatabaseException;
 import com.sensei.service.CryptocurrencyDbService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -19,11 +20,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BinancePairsService {
 
+    @Qualifier("BIN")
     private final RestTemplate restTemplate;
     private final CryptocurrencyDbService cryptoDbService;
     private final AdminConfig adminConfig;
-    public List<CryptoPairDto> getPairLastPrice() throws EmptyCryptocurrencyDatabaseException {
-        CryptoPairDto[] pairs = restTemplate.getForObject(buildUrl(), CryptoPairDto[].class);
+    public List<CryptoPriceDto> getPairLastPrice() throws EmptyCryptocurrencyDatabaseException {
+        CryptoPriceDto[] pairs = restTemplate.getForObject(buildUrl(), CryptoPriceDto[].class);
         return Arrays.asList(pairs);
     }
 
@@ -43,7 +45,7 @@ public class BinancePairsService {
                 .map(crypto -> crypto.getSymbol())
                 .map(symbol -> "\"" + symbol + adminConfig.getStablecoin() + "\",")
         .reduce("[", (partString, element) -> partString += element);
-        String result = symbols.substring(0, symbols.length()-1);
+        String result = symbols.substring(0, symbols.length()-1).toUpperCase();
         return result + "]";
     }
 }

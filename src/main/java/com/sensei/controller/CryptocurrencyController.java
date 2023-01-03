@@ -6,6 +6,7 @@ import com.sensei.exception.CryptoIsObjectOfTradingException;
 import com.sensei.exception.CryptocurrencyNotFoundException;
 import com.sensei.mapper.CryptocurrencyMapper;
 import com.sensei.service.CryptocurrencyDbService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -28,14 +29,14 @@ public class CryptocurrencyController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> addCryptocurrency(@RequestBody CryptocurrencyDto cryptocurrencydto) {
+    public ResponseEntity<Void> addCryptocurrency(@Valid @RequestBody CryptocurrencyDto cryptocurrencydto) {
         cryptoDbService.add(cryptoMapper.mapToCryptocurrency(cryptocurrencydto));
         return ResponseEntity.ok().build();
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CryptocurrencyDto> updateCryptocurrencyData(@RequestBody CryptocurrencyDto cryptocurrencyDto) {
-        Cryptocurrency savedCrypto = cryptoDbService.add(cryptoMapper.mapToCryptocurrency(cryptocurrencyDto));
+    public ResponseEntity<CryptocurrencyDto> updateCryptocurrencyData(@Valid @RequestBody CryptocurrencyDto cryptocurrencyDto) {
+        var savedCrypto = cryptoDbService.add(cryptoMapper.mapToCryptocurrency(cryptocurrencyDto));
         return ResponseEntity.ok(cryptoMapper.mapToCryptocurrencyDto(savedCrypto));
     }
 

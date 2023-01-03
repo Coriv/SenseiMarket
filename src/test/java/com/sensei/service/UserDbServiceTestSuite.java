@@ -1,7 +1,7 @@
 package com.sensei.service;
 
-import com.sensei.entity.Cryptocurrency;
 import com.sensei.entity.User;
+import com.sensei.entity.Cryptocurrency;
 import com.sensei.entity.Wallet;
 import com.sensei.entity.WalletCrypto;
 import com.sensei.exception.InvalidUserIdException;
@@ -35,22 +35,22 @@ class UserDbServiceTestSuite {
     @Test
     void findUserById() throws InvalidUserIdException {
         //Given
-        User user = new User();
-        user.setFirstName("Sebastian");
-        user.setLastName("Boron");
-        user.setDateOfJoin(LocalDateTime.now());
-        user.setActive(true);
-        user.setUsername("Coriver");
-        user.setPassword("Password");
-        user.setEmail("sebastian@kodilla.com");
-        user.setPESEL("12345678910");
-        user.setIdCard("AZC2133");
+        User User = new User();
+        User.setFirstName("Sebastian");
+        User.setLastName("Boron");
+        User.setDateOfJoin(LocalDateTime.now());
+        User.setActive(true);
+        User.setUsername("Coriver");
+        User.setPassword("Password");
+        User.setEmail("sebastian@kodilla.com");
+        User.setPESEL("12345678910");
+        User.setIdCard("AZC2133");
 
-        when(userDao.findById(Mockito.any())).thenReturn(Optional.of(user));
+        when(userDao.findById(Mockito.any())).thenReturn(Optional.of(User));
         //When
-        User foundUser = dbService.findUserById(user.getId());
+        User foundUser = dbService.findUserById(User.getId());
         //Then
-        assertEquals(foundUser.getId(), user.getId());
+        assertEquals(foundUser.getId(), User.getId());
         assertEquals(foundUser.getFirstName(), "Sebastian");
         assertTrue(foundUser.isActive());
         assertEquals(foundUser.getEmail(), "sebastian@kodilla.com");
@@ -63,10 +63,10 @@ class UserDbServiceTestSuite {
         User user = new User();
         user.setFirstName("Sebastian");
         user.setLastName("Brown");
-        User user2 = new User();
-        user2.setFirstName("Marek");
-        user2.setLastName("Kowalski");
-        List<User> users = Arrays.asList(user, user2);
+        User User2 = new User();
+        User2.setFirstName("Marek");
+        User2.setLastName("Kowalski");
+        List<User> users = Arrays.asList(user, User2);
 
         when(userDao.findAll()).thenReturn(users);
         //When
@@ -94,14 +94,14 @@ class UserDbServiceTestSuite {
 
     @Test
     void blockUserTest() {
-        User user = new User();
-        user.setFirstName("Sebastian");
-        user.setLastName("Brown");
-        user.setActive(false);
+        User User = new User();
+        User.setFirstName("Sebastian");
+        User.setLastName("Brown");
+        User.setActive(false);
 
-        when(userDao.save(any(User.class))).thenReturn(user);
+        when(userDao.save(any(User.class))).thenReturn(User);
         //When
-        User resultUser = dbService.blockUser(user);
+        User resultUser = dbService.blockUser(User);
         //Then
         assertTrue(resultUser.isActive());
     }
@@ -109,13 +109,13 @@ class UserDbServiceTestSuite {
     @Test
     void deleteUserTest() {
         //Given
-        User user = new User();
-        user.setFirstName("Sebastian");
-        user.setLastName("Boron");
+        User User = new User();
+        User.setFirstName("Sebastian");
+        User.setLastName("Boron");
         Wallet wallet = new Wallet();
         wallet.setActive(true);
-        wallet.setUser(user);
-        user.setWallet(wallet);
+        wallet.setUser(User);
+        User.setWallet(wallet);
         Cryptocurrency crypto1 = new Cryptocurrency();
         crypto1.setSymbol("BTC");
         crypto1.setName("Bitcoin");
@@ -126,8 +126,8 @@ class UserDbServiceTestSuite {
         crypto1.getWalletCryptoList().add(walletCrypto);
         wallet.getCryptosList().add(walletCrypto);
 
-        when(userDao.findById(any())).thenReturn(Optional.of(user));
+        when(userDao.findById(any())).thenReturn(Optional.of(User));
         //When
-        assertThrows(NotEmptyWalletException.class, () -> dbService.deleteUser(user.getId()));
+        assertThrows(NotEmptyWalletException.class, () -> dbService.deleteUser(User.getId()));
     }
 }

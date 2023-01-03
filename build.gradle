@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.0.0'
+    id 'org.springframework.boot' version '3.0.1'
     id 'io.spring.dependency-management' version '1.1.0'
     id 'org.hibernate.orm' version '6.1.5.Final'
     id 'org.graalvm.buildtools.native' version '0.9.18'
@@ -30,7 +30,9 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation group: 'com.google.code.gson', name: 'gson', version: '2.10'
-   // implementation 'io.springfox:springfox-swagger2:3.0.0'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '3.0.1'
+    // implementation 'org.springframework.boot:spring-boot-starter-security:3.0.1'
+
 
 }
 

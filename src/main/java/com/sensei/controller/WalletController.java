@@ -23,11 +23,9 @@ public class WalletController {
 
     private final WalletDbService walletDbService;
     private final WalletCryptoMapper walletCryptoMapper;
-    private Long userId;
 
     @PostMapping
     public ResponseEntity<Void> createWallet(@RequestParam Long userId) throws InvalidUserIdException, WalletAlreadyExistException, UserNotVerifyException {
-        this.userId = userId;
         walletDbService.createWallet(userId);
         return ResponseEntity.ok().build();
     }
@@ -43,5 +41,4 @@ public class WalletController {
         List<WalletCrypto> cryptos = walletDbService.getCryptosBySymbol(walletId, symbols);
         return ResponseEntity.ok(walletCryptoMapper.mapToWalletCryptoListDto(cryptos));
     }
-
 }

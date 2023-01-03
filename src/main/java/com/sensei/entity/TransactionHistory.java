@@ -27,7 +27,7 @@ public class TransactionHistory {
 
     @NotNull
     @Column(updatable = false)
-    private String cryptoPair;
+    private String cryptocurrency;
 
     @PositiveOrZero
     @Column(updatable = false)

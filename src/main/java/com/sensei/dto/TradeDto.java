@@ -9,8 +9,8 @@ import lombok.Data;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Data
 @Builder
+@Data
 public class TradeDto {
     private Long id;
     @NotNull
@@ -25,6 +25,8 @@ public class TradeDto {
     private boolean open;
     @NotNull
     private Long walletId;
+    @NotNull
+    private Long walletCryptoId;
     private LocalDateTime openTime;
     private LocalDateTime closeTime;
 }

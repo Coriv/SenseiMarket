@@ -31,6 +31,7 @@ class UserMapperTestSuite {
                 .username("Coriver")
                 .password("Password")
                 .email("sebastian@kodilla.com")
+                .notification(true)
                 .build();
 
         User user = userMapper.mapToUser(userDto);
@@ -42,6 +43,7 @@ class UserMapperTestSuite {
         assertEquals(user.getUsername(), "Coriver");
         assertEquals(user.getPassword(), "Password");
         assertEquals(user.getEmail(), "sebastian@kodilla.com");
+        assertTrue(user.isNotification());
     }
 
     @Test
@@ -57,6 +59,7 @@ class UserMapperTestSuite {
         user.setPassword("Password");
         user.setEmail("sebastian@kodilla.com");
         user.setWallet(wallet);
+        user.setNotification(true);
 
         UserDto userDto = userMapper.mapToUserDto(user);
 
@@ -68,22 +71,23 @@ class UserMapperTestSuite {
         assertEquals(userDto.getPassword(), "Password");
         assertEquals(userDto.getEmail(), "sebastian@kodilla.com");
         assertEquals(userDto.getWalletId(), wallet.getId());
+        assertTrue(userDto.isNotification());
     }
 
     @Test
     public void mapToUserDtoListTest() {
         Wallet wallet = new Wallet();
 
-        User user = new User();
-        user.setFirstName("Sebastian");
-        user.setLastName("Boron");
-        user.setDateOfJoin(LocalDateTime.now());
-        user.setActive(true);
-        user.setUsername("Coriver");
-        user.setPassword("Password");
-        user.setEmail("sebastian@kodilla.com");
-        user.setWallet(wallet);
-        List<User> users = Arrays.asList(user);
+        User User = new User();
+        User.setFirstName("Sebastian");
+        User.setLastName("Boron");
+        User.setDateOfJoin(LocalDateTime.now());
+        User.setActive(true);
+        User.setUsername("Coriver");
+        User.setPassword("Password");
+        User.setEmail("sebastian@kodilla.com");
+        User.setWallet(wallet);
+        List<User> users = Arrays.asList(User);
 
         List<UserDto> usersDto = userMapper.mapToUserDtoList(users);
 

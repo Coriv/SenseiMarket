@@ -4,12 +4,12 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 
-@Data
 @Builder
+@Data
 public class CryptocurrencyDto {
 
-    private Long id;
     @NotNull
     private String symbol;
+    @NotNull
     private String name;
 }

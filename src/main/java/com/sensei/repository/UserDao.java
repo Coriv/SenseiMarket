@@ -17,7 +17,8 @@ public interface UserDao extends CrudRepository<User, Long> {
     @Override
     List<User> findAll();
     @Override
-    User save(User user);
+    User save(User User);
     @Override
     void deleteById(Long id);
+    Optional<User> findByUsername(String username);
 }

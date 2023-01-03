@@ -1,5 +1,6 @@
 package com.sensei.service;
 
+import com.sensei.config.AdminConfig;
 import com.sensei.entity.*;
 import com.sensei.exception.InvalidUserIdException;
 import com.sensei.exception.UserNotVerifyException;
@@ -26,16 +27,17 @@ public class WalletDbService {
     private final WalletDao walletDao;
     private final UserDao userDao;
     private final CryptocurrencyDao cryptocurrencyDao;
+    private final AdminConfig adminConfig;
 
     public Wallet createWallet(Long userId) throws InvalidUserIdException, WalletAlreadyExistException, UserNotVerifyException {
-        User user = userDao.findById(userId).orElseThrow(InvalidUserIdException::new);
+        User User = userDao.findById(userId).orElseThrow(InvalidUserIdException::new);
         Wallet wallet;
-        if (user.getWallet() != null) {
+        if (User.getWallet() != null) {
             throw new WalletAlreadyExistException();
         } else {
             wallet = new Wallet();
-            wallet.setUser(user);
-            user.setWallet(wallet);
+            wallet.setUser(User);
+            User.setWallet(wallet);
             CashWallet cashWallet = new CashWallet();
             cashWallet.setWallet(wallet);
             wallet.setCashWallet(cashWallet);
@@ -45,9 +47,10 @@ public class WalletDbService {
                 WalletCrypto walletCrypto = new WalletCrypto();
                 walletCrypto.setWallet(wallet);
                 walletCrypto.setCryptocurrency(crypto);
+                walletCrypto.setAddress(adminConfig.getAddress() + userId + wallet.getId() + walletCrypto.getId());
                 wallet.getCryptosList().add(walletCrypto);
             }
-            if (user.getPESEL() != null && user.getIdCard() != null) {
+            if (User.getPESEL() != null && User.getIdCard() != null) {
                 throw new UserNotVerifyException();
             } else {
                 wallet.setActive(true);

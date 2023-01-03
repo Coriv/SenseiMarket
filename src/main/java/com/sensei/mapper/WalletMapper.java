@@ -1,7 +1,6 @@
 package com.sensei.mapper;
 
 import com.sensei.dto.WalletDto;
-import com.sensei.entity.CashWallet;
 import com.sensei.entity.Trade;
 import com.sensei.entity.Wallet;
 import com.sensei.entity.WalletCrypto;

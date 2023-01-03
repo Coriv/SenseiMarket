@@ -1,5 +1,6 @@
 package com.sensei.service;
 
+import com.sensei.config.AdminConfig;
 import com.sensei.entity.Cryptocurrency;
 import com.sensei.entity.User;
 import com.sensei.entity.Wallet;
@@ -8,16 +9,13 @@ import com.sensei.exception.InvalidUserIdException;
 import com.sensei.exception.UserNotVerifyException;
 import com.sensei.exception.WalletAlreadyExistException;
 import com.sensei.exception.WalletNotFoundException;
+import com.sensei.repository.CryptocurrencyDao;
 import com.sensei.repository.UserDao;
 import com.sensei.repository.WalletDao;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.annotation.DirtiesContext;
 
@@ -28,7 +26,8 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
@@ -39,18 +38,24 @@ class WalletDbServiceTestSuite {
     private UserDao userDao;
     @Mock
     private WalletDao walletDao;
+    @Mock
+    private CryptocurrencyDao cryptocurrencyDao;
+    @Mock
+    private AdminConfig adminConfig;
+
     @Test
     void createWalletTest() throws InvalidUserIdException, WalletAlreadyExistException, UserNotVerifyException {
         User user = new User();
         user.setFirstName("Sebastian");
-        user.setLastName("Boron");
+        user.setLastName("Brown");
         Wallet wallet = new Wallet();
         wallet.setActive(true);
-        wallet.setUser(user);
-        user.setWallet(wallet);
+        Cryptocurrency btc = new Cryptocurrency("BTC", "Bitcoin");
 
         when(userDao.findById(any())).thenReturn(Optional.of(user));
         when(walletDao.save(any(Wallet.class))).thenReturn(wallet);
+        when(cryptocurrencyDao.findAll()).thenReturn(Arrays.asList(btc));
+        when(adminConfig.getAddress()).thenReturn("address");
         // When
         Wallet resultWallet = dbService.createWallet(1L);
         //Then
@@ -83,7 +88,6 @@ class WalletDbServiceTestSuite {
 
     @Test
     void getCryptosBySymbolTest() throws WalletNotFoundException {
-
         String[] symbols = {"BTC", "ETH"};
         Wallet wallet = new Wallet();
         wallet.setId(32L);
@@ -104,7 +108,6 @@ class WalletDbServiceTestSuite {
         walletCryptoETH.setCryptocurrency(ethereum);
         walletCryptoETH.setQuantity(new BigDecimal("1230"));
         walletCryptoETH.setWallet(wallet);
-
 
         WalletCrypto walletCryptoMATIC = new WalletCrypto();
         walletCryptoMATIC.setCryptocurrency(polygon);

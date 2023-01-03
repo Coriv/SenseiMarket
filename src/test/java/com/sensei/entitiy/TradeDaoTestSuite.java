@@ -1,7 +1,11 @@
 package com.sensei.entitiy;
 
 import com.sensei.entity.*;
-import com.sensei.repository.*;
+import com.sensei.exception.TradeNotFoundException;
+import com.sensei.repository.CryptocurrencyDao;
+import com.sensei.repository.TradeDao;
+import com.sensei.repository.UserDao;
+import com.sensei.repository.WalletDao;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,44 +13,38 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 public class TradeDaoTestSuite {
     @Autowired
     private TradeDao tradeDao;
     @Autowired
-    private CryptoPairDao cryptoPairDao;
-    @Autowired
     private WalletDao walletDao;
     @Autowired
     private UserDao userDao;
     @Autowired
     private CryptocurrencyDao cryptocurrencyDao;
-    @Autowired
-    private CashWalletDao cashWalletDao;
 
     @Test
-    void addingNewTradeTest() {
+    void addingNewTradeTest() throws TradeNotFoundException {
         //Given
         User user = new User();
-        user.setFirstName("Sebastian");
-        user.setLastName("Boron");
+        user.setFirstName("Marek");
+        user.setLastName("Pawel");
         user.setDateOfJoin(LocalDateTime.now());
         user.setActive(true);
-        user.setUsername("Coriver");
-        user.setPassword("Password");
-        user.setEmail("sebastian@kodilla.com");
-        user.setPESEL("12345678910");
-        user.setIdCard("AZC2133");
+        user.setUsername("Drugi");
+        user.setPassword("haslo");
+        user.setEmail("test@test.com");
+        user.setPESEL("12345423454");
+        user.setIdCard("KKK342234");
 
         Wallet wallet = new Wallet();
-        Cryptocurrency bitcoin = new Cryptocurrency();
-        bitcoin.setName("Bitcoin");
-        bitcoin.setSymbol("BTC");
+
+        Cryptocurrency bitcoin = cryptocurrencyDao.findBySymbol("BTC").orElse(new Cryptocurrency("BTC", "Bitcoin"));
+        Cryptocurrency ethereum = cryptocurrencyDao.findBySymbol("ETH").orElse(new Cryptocurrency("ETH", "Ethereum"));
 
         wallet.setUser(user);
         user.setWallet(wallet);
@@ -55,25 +53,25 @@ public class TradeDaoTestSuite {
         trade.setTransactionType(TransactionType.BUY);
         trade.setWallet(wallet);
         trade.setCryptocurrency(bitcoin);
-        trade.setPrice(BigDecimal.valueOf(3424));
-        trade.setQuantity(BigDecimal.valueOf(344));
+        trade.setPrice(BigDecimal.valueOf(1));
+        trade.setQuantity(BigDecimal.valueOf(100));
         trade.setValue(trade.getPrice().multiply(trade.getQuantity()));
-        trade.setOpen(false);
+        trade.setOpen(true);
 
         bitcoin.setTrades(Arrays.asList(trade));
         wallet.setTrades(Arrays.asList(trade));
 
-        Cryptocurrency cryptocurrency = cryptocurrencyDao.findBySymbol("BTC").get();
-        Cryptocurrency cryptocurrency2 = cryptocurrencyDao.findBySymbol("ETH").get();
 
         WalletCrypto walletCrypto = new WalletCrypto();
         walletCrypto.setWallet(wallet);
-        walletCrypto.setQuantity(BigDecimal.valueOf(34));
-        walletCrypto.setCryptocurrency(cryptocurrency);
+        walletCrypto.setQuantity(BigDecimal.valueOf(100));
+        walletCrypto.setCryptocurrency(bitcoin);
+        walletCrypto.setAddress("adresssssssssss");
         WalletCrypto walletCrypto2 = new WalletCrypto();
         walletCrypto2.setWallet(wallet);
-        walletCrypto2.setQuantity(BigDecimal.valueOf(34535));
-        walletCrypto2.setCryptocurrency(cryptocurrency2);
+        walletCrypto2.setQuantity(BigDecimal.valueOf(100));
+        walletCrypto2.setCryptocurrency(ethereum);
+        walletCrypto2.setAddress("dsassdsafdsva");
         wallet.setCryptosList(Arrays.asList(walletCrypto, walletCrypto2));
 
         CashWallet cashWallet = new CashWallet();
@@ -82,22 +80,17 @@ public class TradeDaoTestSuite {
         wallet.setCashWallet(cashWallet);
 
         //When
-        //cashWalletDao.save(cashWallet);
-        cryptocurrencyDao.save(bitcoin);
         userDao.save(user);
-
-        walletDao.save(wallet);
         tradeDao.save(trade);
-        Optional<Trade> resultTrade = tradeDao.findById(trade.getId());
+        Trade resultTrade = tradeDao.findById(trade.getId()).orElseThrow(TradeNotFoundException::new);
         //Then
-        assertTrue(resultTrade.isPresent());
-        assertEquals(resultTrade.get().getCryptocurrency().getSymbol(), "BTC");
-        assertEquals(resultTrade.get().getValue().doubleValue(), 1177856.00);
-        assertEquals(resultTrade.get().getPrice().doubleValue(), 3424.0);
-        assertEquals(resultTrade.get().getQuantity().doubleValue(), 344.0);
+        assertEquals(resultTrade.getCryptocurrency().getSymbol(), "BTC");
+        assertEquals(resultTrade.getValue().doubleValue(), 100.00);
+        assertEquals(resultTrade.getPrice().doubleValue(), 1.00);
+        assertEquals(resultTrade.getQuantity().doubleValue(), 100.00);
         //CleanUp
-        //tradeDao.deleteById(trade.getId());
-        //walletDao.deleteById(wallet.getId());
-        //cryptoPairDao.deleteById(cryptoPrice.getSymbol());
+        tradeDao.deleteById(trade.getId());
+        walletDao.deleteById(wallet.getId());
+        userDao.deleteById(user.getId());
     }
 }
