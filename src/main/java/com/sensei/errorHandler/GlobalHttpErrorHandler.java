@@ -88,4 +88,9 @@ public class GlobalHttpErrorHandler {
     public ResponseEntity<Object> cashWalletNotFoundHandler(CryptocurrencyNotFoundException e) {
         return new ResponseEntity<>("Cash Wallet with given ID doest not exist.", HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<Object> userNotFoundHandler(UserNotFoundException e) {
+        return new ResponseEntity<>("User not found!", HttpStatus.NOT_FOUND);
+    }
 }

@@ -1,6 +1,7 @@
 package com.sensei.controller;
 
 import com.sensei.dto.WalletCryptoDto;
+import com.sensei.dto.WithdrawDto;
 import com.sensei.exception.NotEnoughFoundsException;
 import com.sensei.exception.WalletCryptoNotFoundException;
 import com.sensei.mapper.WalletCryptoMapper;
@@ -8,8 +9,6 @@ import com.sensei.service.WalletCryptoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.math.BigDecimal;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,7 +24,7 @@ public class WalletCryptoController {
         return ResponseEntity.ok(walletCryptoMapper.mapToWalletCryptoDto(walletCrypto));
     }
 
-    @GetMapping("/{walletCryptoId}/deposit")
+    @PutMapping("/{walletCryptoId}/deposit")
     public ResponseEntity<String> depositCryptocurrency(@PathVariable Long walletCryptoId) throws WalletCryptoNotFoundException {
         var address = walletCryptoService.getWalletCryptoAddress(walletCryptoId);
         return ResponseEntity.ok(address);
@@ -34,9 +33,8 @@ public class WalletCryptoController {
     @PutMapping("/{walletCryptoId}/withdraw")
     public ResponseEntity<String> withdrawCryptocurrency(
             @PathVariable Long walletCryptoId,
-            @RequestParam BigDecimal quantity,
-            @RequestParam String address) throws WalletCryptoNotFoundException, NotEnoughFoundsException {
-        var info = walletCryptoService.withdrawCrypto(walletCryptoId, quantity, address);
+            @RequestBody WithdrawDto withDrawDto) throws WalletCryptoNotFoundException, NotEnoughFoundsException {
+        var info = walletCryptoService.withdrawCrypto(walletCryptoId, withDrawDto);
         return ResponseEntity.ok(info);
     }
 }

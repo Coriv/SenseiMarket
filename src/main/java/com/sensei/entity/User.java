@@ -11,9 +11,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -21,27 +26,24 @@ import java.util.List;
 @Table(name = "Users", indexes = @Index(columnList = "username"))
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
     @Size(min = 2)
     @NotNull
     private String firstName;
 
-    @Column
     @Size(min = 2)
     @NotNull
     private String lastName;
 
-    @Column
+    @Column(unique = true)
     @NotNull
     private String username;
 
-    @Column
     @NotNull
     private String password;
 
@@ -49,23 +51,19 @@ public class User {
     @Size(min = 11, max = 11, message = "Pesel have to has exactly 11 numbers")
     private String PESEL;
 
-    @Column
     private String idCard;
 
-    @Column
+    @Column(updatable = false)
     private LocalDateTime dateOfJoin;
 
-    @Column
     @Email
     @NotNull
     private String email;
 
-    @Column
     @NotNull
     private boolean active = true;
 
     private boolean notification = true;
-
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Wallet wallet;
 
@@ -74,4 +72,31 @@ public class User {
             fetch = FetchType.LAZY,
             mappedBy = "user")
     private List<TransactionHistory> transactions = new ArrayList<>();
+
+    private String authority;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Arrays.asList(new SimpleGrantedAuthority("USER"));
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.active;
+    }
 }

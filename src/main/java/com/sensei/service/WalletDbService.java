@@ -30,14 +30,14 @@ public class WalletDbService {
     private final AdminConfig adminConfig;
 
     public Wallet createWallet(Long userId) throws InvalidUserIdException, WalletAlreadyExistException, UserNotVerifyException {
-        User User = userDao.findById(userId).orElseThrow(InvalidUserIdException::new);
+        User user = userDao.findById(userId).orElseThrow(InvalidUserIdException::new);
         Wallet wallet;
-        if (User.getWallet() != null) {
+        if (user.getWallet() != null) {
             throw new WalletAlreadyExistException();
         } else {
             wallet = new Wallet();
-            wallet.setUser(User);
-            User.setWallet(wallet);
+            wallet.setUser(user);
+            user.setWallet(wallet);
             CashWallet cashWallet = new CashWallet();
             cashWallet.setWallet(wallet);
             wallet.setCashWallet(cashWallet);
@@ -50,7 +50,7 @@ public class WalletDbService {
                 walletCrypto.setAddress(adminConfig.getAddress() + userId + wallet.getId() + walletCrypto.getId());
                 wallet.getCryptosList().add(walletCrypto);
             }
-            if (User.getPESEL() != null && User.getIdCard() != null) {
+            if (user.getPESEL() == null || user.getIdCard() == null) {
                 throw new UserNotVerifyException();
             } else {
                 wallet.setActive(true);
@@ -75,16 +75,7 @@ public class WalletDbService {
         }
     }
 
-    public Map<String, BigDecimal> getWalletContent(Long walletId) throws WalletNotFoundException {
-        Wallet wallet = walletDao.findById(walletId).orElseThrow(WalletNotFoundException::new);
-        Map<String, BigDecimal> walletContent = new LinkedHashMap<>();
-
-        CashWallet cashWallet = wallet.getCashWallet();
-        walletContent.put(cashWallet.getCurrency(), cashWallet.getQuantity());
-
-        for (WalletCrypto crypto : wallet.getCryptosList()) {
-            walletContent.put(crypto.getCryptocurrency().getSymbol(), crypto.getQuantity());
-        }
-        return walletContent;
+    public Wallet getWalletContent(Long walletId) throws WalletNotFoundException {
+        return walletDao.findById(walletId).orElseThrow(WalletNotFoundException::new);
     }
 }

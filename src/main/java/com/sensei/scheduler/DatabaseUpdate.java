@@ -17,6 +17,7 @@ public class DatabaseUpdate {
 
     private final CryptoPriceService cryptoPriceService;
 
+
     @Scheduled(timeUnit = TimeUnit.MINUTES, fixedRate = 10)
     public void updateCurrentCryptoPrice() throws EmptyCryptocurrencyDatabaseException {
         log.info("Updating cryptocurrency price database...");

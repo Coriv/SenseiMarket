@@ -84,7 +84,7 @@ public class TradeDbService {
         var wallet = trade.getWallet();
         if (trade.getTransactionType().equals(TransactionType.BUY)) {
             var quantity = wallet.getCashWallet().getQuantity();
-            wallet.getCashWallet().setQuantity(quantity.add(trade.getQuantity()));
+            wallet.getCashWallet().setQuantity(quantity.add(trade.getQuantity().multiply(trade.getPrice())));
         } else {
             cryptoSymbol = trade.getCryptocurrency().getSymbol();
             var walletCrypto = fetchWalletCrypto(wallet, cryptoSymbol);
@@ -176,11 +176,8 @@ public class TradeDbService {
 
     private void saveTransaction(User user1, User user2, DealDto deal2) throws CloneNotSupportedException {
         DealDto deal1 = deal2.clone();
-        if (deal2.getTransactionType().equals(TransactionType.BUY)) {
-            deal2.setTransactionType(TransactionType.SELL);
-        } else {
-            deal2.setTransactionType(TransactionType.BUY);
-        }
+        TransactionType type = deal2.getTransactionType().equals(TransactionType.BUY) ? TransactionType.SELL : TransactionType.BUY;
+        deal2.setTransactionType(type);
         historyService.saveTransaction(user1, deal1);
         historyService.saveTransaction(user2, deal2);
     }

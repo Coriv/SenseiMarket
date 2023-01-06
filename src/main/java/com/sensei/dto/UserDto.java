@@ -21,7 +21,6 @@ import java.time.LocalDateTime;
 @Slf4j
 public class UserDto implements Observer {
 
-    @NotNull
     private Long id;
     @NotNull
     private String firstName;

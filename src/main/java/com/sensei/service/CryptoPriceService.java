@@ -41,4 +41,8 @@ public class CryptoPriceService {
         }
         return prices;
     }
+
+    public List<CryptoPrice> findTheNewestPrices() {
+        return cryptoPriceDao.findAllByTimeIsAfter(LocalDateTime.now().minusMinutes(10));
+    }
 }

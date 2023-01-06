@@ -10,6 +10,7 @@ import com.sensei.observer.Observable;
 import com.sensei.observer.Observer;
 import com.sensei.repository.CryptocurrencyDao;
 import com.sensei.repository.UserDao;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -74,5 +75,9 @@ public class CryptocurrencyDbService implements Observable {
     @Override
     public void removeObserver(Observer observer) {
         observers.remove(observer);
+    }
+
+    public List<Observer> getObservers() {
+        return observers;
     }
 }

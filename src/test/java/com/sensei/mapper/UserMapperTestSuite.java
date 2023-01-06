@@ -49,7 +49,6 @@ class UserMapperTestSuite {
     @Test
     public void mapToUserDtoTest() {
         Wallet wallet = new Wallet();
-
         User user = new User();
         user.setFirstName("Sebastian");
         user.setLastName("Boron");
@@ -78,16 +77,16 @@ class UserMapperTestSuite {
     public void mapToUserDtoListTest() {
         Wallet wallet = new Wallet();
 
-        User User = new User();
-        User.setFirstName("Sebastian");
-        User.setLastName("Boron");
-        User.setDateOfJoin(LocalDateTime.now());
-        User.setActive(true);
-        User.setUsername("Coriver");
-        User.setPassword("Password");
-        User.setEmail("sebastian@kodilla.com");
-        User.setWallet(wallet);
-        List<User> users = Arrays.asList(User);
+        User user = new User();
+        user.setFirstName("Sebastian");
+        user.setLastName("Boron");
+        user.setDateOfJoin(LocalDateTime.now());
+        user.setActive(true);
+        user.setUsername("Coriver");
+        user.setPassword("Password");
+        user.setEmail("sebastian@kodilla.com");
+        user.setWallet(wallet);
+        List<User> users = Arrays.asList(user);
 
         List<UserDto> usersDto = userMapper.mapToUserDtoList(users);
 

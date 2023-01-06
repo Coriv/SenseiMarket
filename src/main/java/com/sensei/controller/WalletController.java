@@ -1,20 +1,20 @@
 package com.sensei.controller;
 
 import com.sensei.dto.WalletCryptoDto;
+import com.sensei.dto.WalletDto;
 import com.sensei.entity.WalletCrypto;
 import com.sensei.exception.InvalidUserIdException;
 import com.sensei.exception.UserNotVerifyException;
 import com.sensei.exception.WalletAlreadyExistException;
 import com.sensei.exception.WalletNotFoundException;
 import com.sensei.mapper.WalletCryptoMapper;
+import com.sensei.mapper.WalletMapper;
 import com.sensei.service.WalletDbService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/v1/wallet")
@@ -23,6 +23,7 @@ public class WalletController {
 
     private final WalletDbService walletDbService;
     private final WalletCryptoMapper walletCryptoMapper;
+    private final WalletMapper walletMapper;
 
     @PostMapping
     public ResponseEntity<Void> createWallet(@RequestParam Long userId) throws InvalidUserIdException, WalletAlreadyExistException, UserNotVerifyException {
@@ -31,13 +32,16 @@ public class WalletController {
     }
 
     @GetMapping("/{walletId}")
-    public ResponseEntity<Map<String, BigDecimal>> fetchWalletContent(@PathVariable Long walletId) throws WalletNotFoundException {
-        Map<String, BigDecimal> walletContent = walletDbService.getWalletContent(walletId);
-        return ResponseEntity.ok(walletContent);
+    public ResponseEntity<WalletDto> fetchWalletContent(@PathVariable Long walletId) throws WalletNotFoundException {
+        var wallet = walletDbService.getWalletContent(walletId);
+        return ResponseEntity.ok(walletMapper.mapToWalletDto(wallet));
     }
 
+
     @GetMapping(value = "/{walletId}", params = {"symbols"})
-    public ResponseEntity<List<WalletCryptoDto>> fetchCryptosBySymbol(@PathVariable Long walletId, @RequestParam String... symbols) throws WalletNotFoundException {
+    public ResponseEntity<List<WalletCryptoDto>> fetchCryptosOptionalBySymbol
+            (@PathVariable Long walletId,
+             @RequestParam (required = false) String... symbols) throws WalletNotFoundException {
         List<WalletCrypto> cryptos = walletDbService.getCryptosBySymbol(walletId, symbols);
         return ResponseEntity.ok(walletCryptoMapper.mapToWalletCryptoListDto(cryptos));
     }

@@ -4,6 +4,7 @@ import com.sensei.dto.UserDto;
 import com.sensei.entity.User;
 import com.sensei.repository.UserDao;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 public class UserMapper {
 
     private final UserDao userDao;
+    private final PasswordEncoder passwordEncoder;
 
     public User mapToUser(UserDto userDto) {
         User user;
@@ -27,7 +29,7 @@ public class UserMapper {
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
         user.setUsername(userDto.getUsername());
-        user.setPassword(userDto.getPassword());
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setPESEL(userDto.getPESEL());
         user.setIdCard(userDto.getIdCard());
         user.setDateOfJoin(userDto.getDateOfJoin());

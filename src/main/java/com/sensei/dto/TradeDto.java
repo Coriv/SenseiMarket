@@ -25,8 +25,6 @@ public class TradeDto {
     private boolean open;
     @NotNull
     private Long walletId;
-    @NotNull
-    private Long walletCryptoId;
     private LocalDateTime openTime;
     private LocalDateTime closeTime;
 }

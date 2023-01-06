@@ -55,5 +55,6 @@ public class TransactionsHistoryTestSuite {
         assertEquals(resultTransaction.getTransactionType(), TransactionType.BUY);
         //CleanUp
         userDao.deleteById(user.getId());
+        transactionHistoryDao.deleteById(transaction.getId());
     }
 }

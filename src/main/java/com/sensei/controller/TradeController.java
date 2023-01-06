@@ -65,6 +65,4 @@ public class TradeController {
         DealDto dealDto = tradeDbService.makeDeal(userId, tradeId, quantity);
         return ResponseEntity.ok(dealDto);
     }
-
-
 }

@@ -1,13 +1,14 @@
 package com.sensei.controller;
 
+import com.sensei.dto.AuthenticationDto;
 import com.sensei.dto.UserDto;
 import com.sensei.entity.User;
-import com.sensei.exception.InvalidUserIdException;
-import com.sensei.exception.NotEmptyWalletException;
+import com.sensei.exception.*;
 import com.sensei.mapper.UserMapper;
 import com.sensei.service.UserDbService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1/user")
 @RequiredArgsConstructor
+@Slf4j
 public class UserController {
 
     private final UserDbService userDbService;
@@ -28,16 +30,28 @@ public class UserController {
         return ResponseEntity.ok(userMapper.mapToUserDtoList(usersList));
     }
 
+    @GetMapping("/usernames")
+    public ResponseEntity<List<String>> fetchUsernamesToPreventDuplicate() {
+        return ResponseEntity.ok(userDbService.getAllUsernames());
+    }
+
     @GetMapping("/{userId}")
     public ResponseEntity<UserDto> fetchUserById(@PathVariable Long userId) throws InvalidUserIdException {
         var user = userDbService.findUserById(userId);
         return ResponseEntity.ok(userMapper.mapToUserDto(user));
     }
 
+    @GetMapping("/findWallet")
+    public ResponseEntity<Long> findWalledId
+            (@RequestParam String username) throws UserNotFoundException {
+        var walletId = userDbService.findWalletId(username);
+        return ResponseEntity.ok(walletId);
+    }
+
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> createUser(@Valid @RequestBody UserDto userDto) {
+    public ResponseEntity<Void> createUser(@Valid @RequestBody UserDto userDto) throws UserNotVerifyException, WalletAlreadyExistException, InvalidUserIdException {
         var user = userMapper.mapToUser(userDto);
-        userDbService.save(user);
+        userDbService.createUser(user);
         return ResponseEntity.ok().build();
     }
 
@@ -51,7 +65,7 @@ public class UserController {
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDto> updateUserData(@Valid @RequestBody UserDto userDto) {
         var user = userMapper.mapToUser(userDto);
-        var savedUser = userDbService.save(user);
+        var savedUser = userDbService.updateUser(user);
         return ResponseEntity.ok(userMapper.mapToUserDto(savedUser));
     }
 

@@ -1,11 +1,13 @@
 package com.sensei.service;
 
-import com.sensei.entity.User;
 import com.sensei.entity.Cryptocurrency;
+import com.sensei.entity.User;
 import com.sensei.entity.Wallet;
 import com.sensei.entity.WalletCrypto;
 import com.sensei.exception.InvalidUserIdException;
 import com.sensei.exception.NotEmptyWalletException;
+import com.sensei.exception.UserNotVerifyException;
+import com.sensei.exception.WalletAlreadyExistException;
 import com.sensei.repository.UserDao;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,22 +37,22 @@ class UserDbServiceTestSuite {
     @Test
     void findUserById() throws InvalidUserIdException {
         //Given
-        User User = new User();
-        User.setFirstName("Sebastian");
-        User.setLastName("Boron");
-        User.setDateOfJoin(LocalDateTime.now());
-        User.setActive(true);
-        User.setUsername("Coriver");
-        User.setPassword("Password");
-        User.setEmail("sebastian@kodilla.com");
-        User.setPESEL("12345678910");
-        User.setIdCard("AZC2133");
+        User user = new User();
+        user.setFirstName("Sebastian");
+        user.setLastName("Boron");
+        user.setDateOfJoin(LocalDateTime.now());
+        user.setActive(true);
+        user.setUsername("Coriver");
+        user.setPassword("Password");
+        user.setEmail("sebastian@kodilla.com");
+        user.setPESEL("12345678910");
+        user.setIdCard("AZC2133");
 
-        when(userDao.findById(Mockito.any())).thenReturn(Optional.of(User));
+        when(userDao.findById(Mockito.any())).thenReturn(Optional.of(user));
         //When
-        User foundUser = dbService.findUserById(User.getId());
+        User foundUser = dbService.findUserById(user.getId());
         //Then
-        assertEquals(foundUser.getId(), User.getId());
+        assertEquals(foundUser.getId(), user.getId());
         assertEquals(foundUser.getFirstName(), "Sebastian");
         assertTrue(foundUser.isActive());
         assertEquals(foundUser.getEmail(), "sebastian@kodilla.com");
@@ -63,10 +65,10 @@ class UserDbServiceTestSuite {
         User user = new User();
         user.setFirstName("Sebastian");
         user.setLastName("Brown");
-        User User2 = new User();
-        User2.setFirstName("Marek");
-        User2.setLastName("Kowalski");
-        List<User> users = Arrays.asList(user, User2);
+        User user2 = new User();
+        user2.setFirstName("Marek");
+        user2.setLastName("Kowalski");
+        List<User> users = Arrays.asList(user, user2);
 
         when(userDao.findAll()).thenReturn(users);
         //When
@@ -78,15 +80,28 @@ class UserDbServiceTestSuite {
     }
 
     @Test
-    void saveUserTest() {
+    void createUserTest() throws UserNotVerifyException, WalletAlreadyExistException, InvalidUserIdException {
         //Given
         User user = new User();
         user.setFirstName("Sebastian");
         user.setLastName("Brown");
-
         when(userDao.save(any(User.class))).thenReturn(user);
         //When
-        User resultUser = dbService.save(user);
+        User resultUser = dbService.createUser(user);
+        //Then
+        assertEquals(resultUser.getFirstName(), "Sebastian");
+        assertEquals(resultUser.getLastName(), "Brown");
+    }
+
+    @Test
+    public void updateUserTest() {
+        //Given
+        User user = new User();
+        user.setFirstName("Sebastian");
+        user.setLastName("Brown");
+        when(userDao.save(any(User.class))).thenReturn(user);
+        //When
+        User resultUser = dbService.updateUser(user);
         //Then
         assertEquals(resultUser.getFirstName(), "Sebastian");
         assertEquals(resultUser.getLastName(), "Brown");
@@ -94,14 +109,14 @@ class UserDbServiceTestSuite {
 
     @Test
     void blockUserTest() {
-        User User = new User();
-        User.setFirstName("Sebastian");
-        User.setLastName("Brown");
-        User.setActive(false);
+        User user = new User();
+        user.setFirstName("Sebastian");
+        user.setLastName("Brown");
+        user.setActive(false);
 
-        when(userDao.save(any(User.class))).thenReturn(User);
+        when(userDao.save(any(User.class))).thenReturn(user);
         //When
-        User resultUser = dbService.blockUser(User);
+        User resultUser = dbService.blockUser(user);
         //Then
         assertTrue(resultUser.isActive());
     }
@@ -109,13 +124,13 @@ class UserDbServiceTestSuite {
     @Test
     void deleteUserTest() {
         //Given
-        User User = new User();
-        User.setFirstName("Sebastian");
-        User.setLastName("Boron");
+        User user = new User();
+        user.setFirstName("Sebastian");
+        user.setLastName("Boron");
         Wallet wallet = new Wallet();
         wallet.setActive(true);
-        wallet.setUser(User);
-        User.setWallet(wallet);
+        wallet.setUser(user);
+        user.setWallet(wallet);
         Cryptocurrency crypto1 = new Cryptocurrency();
         crypto1.setSymbol("BTC");
         crypto1.setName("Bitcoin");
@@ -126,8 +141,24 @@ class UserDbServiceTestSuite {
         crypto1.getWalletCryptoList().add(walletCrypto);
         wallet.getCryptosList().add(walletCrypto);
 
-        when(userDao.findById(any())).thenReturn(Optional.of(User));
+        when(userDao.findById(any())).thenReturn(Optional.of(user));
         //When
-        assertThrows(NotEmptyWalletException.class, () -> dbService.deleteUser(User.getId()));
+        assertThrows(NotEmptyWalletException.class, () -> dbService.deleteUser(user.getId()));
+    }
+
+    @Test
+    void getUsernamesTest() {
+        User user = new User();
+        user.setFirstName("Sebastian");
+        user.setLastName("Brown");
+        User user2 = new User();
+        user2.setFirstName("Marek");
+        user2.setLastName("Kowalski");
+        List<User> users = Arrays.asList(user, user2);
+        when(userDao.findAll()).thenReturn(users);
+        //When
+        List<String> usernames = dbService.getAllUsernames();
+        //Then
+        assertEquals(usernames.size(), 2);
     }
 }

@@ -1,6 +1,7 @@
 package com.sensei.controller;
 
 import com.sensei.dto.CashWalletDto;
+import com.sensei.dto.WithdrawDto;
 import com.sensei.exception.CashWalletNotFoundException;
 import com.sensei.exception.NotEnoughFoundsException;
 import com.sensei.mapper.CashWalletMapper;
@@ -25,20 +26,19 @@ public class CashWalletController {
         return ResponseEntity.ok(cashMapper.mapToCashWalletDto(cashWallet));
     }
 
-    @PutMapping("/{cashWalletId}/withdraw")
-    public ResponseEntity<String> withdrawMoney(
+    @PutMapping("/withdraw/{cashWalletId}")
+    public ResponseEntity<CashWalletDto> withdrawMoney(
             @PathVariable Long cashWalletId,
-            @RequestParam BigDecimal accountNumber,
-            @RequestParam BigDecimal quantity) throws CashWalletNotFoundException, NotEnoughFoundsException {
-        var info = cashService.withdrawMoney(cashWalletId, accountNumber, quantity);
-        return ResponseEntity.ok(info);
+            @RequestBody WithdrawDto withDrawDto) throws CashWalletNotFoundException, NotEnoughFoundsException {
+        var cashWallet = cashService.withdrawMoney(cashWalletId, withDrawDto);
+        return ResponseEntity.ok(cashMapper.mapToCashWalletDto(cashWallet));
     }
 
-    @PutMapping("/{cashWalletId}/deposit")
-    public ResponseEntity<String> depositMoney(
+    @PutMapping("/deposit/{cashWalletId}")
+    public ResponseEntity<CashWalletDto> depositMoney(
             @PathVariable Long cashWalletId,
             @RequestParam BigDecimal quantity) throws CashWalletNotFoundException {
-        var info = cashService.depositMoney(cashWalletId, quantity);
-        return ResponseEntity.ok(info);
+        var cashWallet = cashService.depositMoney(cashWalletId, quantity);
+        return ResponseEntity.ok(cashMapper.mapToCashWalletDto(cashWallet));
     }
 }

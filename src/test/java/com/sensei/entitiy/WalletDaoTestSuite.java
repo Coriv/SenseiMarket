@@ -30,7 +30,7 @@ public class WalletDaoTestSuite {
         user.setLastName("Brown");
         user.setDateOfJoin(LocalDateTime.now());
         user.setActive(true);
-        user.setUsername("Coriver");
+        user.setUsername("Coriver@Testdf");
         user.setPassword("Password");
         user.setEmail("sebastian@kodilla.com");
         user.setPESEL("12345678910");
