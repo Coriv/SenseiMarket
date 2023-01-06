@@ -2,7 +2,6 @@ package com.sensei.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,10 +11,12 @@ import java.time.LocalDateTime;
 @Entity
 @Data
 @NoArgsConstructor
-public class CashFlowHistory {
+public class CryptoFlowHistory {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @ManyToOne(cascade = CascadeType.PERSIST,
             fetch = FetchType.LAZY)
     @NotNull
@@ -24,19 +25,20 @@ public class CashFlowHistory {
 
     @Column(updatable = false)
     @NotNull
+    private String symbol;
+
+    @Column(updatable = false)
+    @NotNull
     private OperationType type;
 
     @Column(updatable = false)
-    @PositiveOrZero
-    private BigDecimal quantityUSD;
+    @NotNull
+    private BigDecimal quantity;
 
     @Column(updatable = false)
-    @PositiveOrZero
-    private BigDecimal quantityPLN;
+    private String addressTo;
 
     @Column(updatable = false)
-    private String toAccount;
-
-    @Column(updatable = false)
+    @NotNull
     private LocalDateTime time;
 }

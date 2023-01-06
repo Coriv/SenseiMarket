@@ -1,10 +1,7 @@
 package com.sensei.service;
 
 import com.sensei.dto.WithdrawDto;
-import com.sensei.entity.CashFlowHistory;
-import com.sensei.entity.CashWallet;
-import com.sensei.entity.TransactionType;
-import com.sensei.entity.User;
+import com.sensei.entity.*;
 import com.sensei.exception.CashWalletNotFoundException;
 import com.sensei.exception.NotEnoughFoundsException;
 import com.sensei.externalService.NbpService;
@@ -33,6 +30,8 @@ public class CashWalletDbService {
         var cashWallet = cashWalletDao.findById(cashWalletId).orElseThrow(CashWalletNotFoundException::new);
         var user = cashWallet.getWallet().getUser();
         if (cashWallet.getQuantity().compareTo(withDrawDto.getQuantity()) < 0) {
+            log.error("Not enough funds to process withdraw for user: " + user.getUsername() +
+                    ". Actual account balance: " + cashWallet.getQuantity());
             throw new NotEnoughFoundsException();
         }
         cashWallet.setQuantity(cashWallet.getQuantity().subtract(withDrawDto.getQuantity()));
@@ -44,7 +43,7 @@ public class CashWalletDbService {
         var quantityPLN = nbpService.exchangeUsdToPln(quantityUSD);
         CashFlowHistory history = new CashFlowHistory();
         history.setUser(user);
-        history.setType(TransactionType.SELL);
+        history.setType(OperationType.DEBIT);
         history.setQuantityUSD(quantityUSD);
         history.setQuantityPLN(quantityPLN);
         history.setTime(LocalDateTime.now());
@@ -66,7 +65,7 @@ public class CashWalletDbService {
     private void saveDepositToHistory(User user, BigDecimal quantityUSD, BigDecimal quantityPLN) {
         CashFlowHistory cashFlowHistory = new CashFlowHistory();
         cashFlowHistory.setUser(user);
-        cashFlowHistory.setType(TransactionType.BUY);
+        cashFlowHistory.setType(OperationType.CREDIT);
         cashFlowHistory.setQuantityUSD(quantityUSD);
         cashFlowHistory.setQuantityPLN(quantityPLN);
         cashFlowHistory.setTime(LocalDateTime.now());

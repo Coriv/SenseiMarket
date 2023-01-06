@@ -13,8 +13,8 @@ public class CashFlowHistService {
 
     private final CashFlowHistoryDao historyDao;
 
-    public List<CashFlowHistory> getAll() {
-        return historyDao.findAll();
+    public List<CashFlowHistory> getAllByUserId(Long userId) {
+        return historyDao.findAllByUser(userId);
     }
 
     public CashFlowHistory save(CashFlowHistory cashFlowHistory) {

@@ -4,7 +4,7 @@ import com.sensei.entity.TradeHistory;
 import com.sensei.entity.User;
 import com.sensei.entity.TransactionType;
 import com.sensei.exception.HistoricalTransactionNotFoundException;
-import com.sensei.repository.TransactionHistoryDao;
+import com.sensei.repository.TradeHistoryDao;
 import com.sensei.repository.UserDao;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TransactionsHistoryTestSuite {
 
     @Autowired
-    private TransactionHistoryDao transactionHistoryDao;
+    private TradeHistoryDao tradeHistoryDao;
 
     @Autowired
     private UserDao userDao;
@@ -46,14 +46,14 @@ public class TransactionsHistoryTestSuite {
 
         //When
         userDao.save(user);
-        transactionHistoryDao.save(transaction);
-        TradeHistory resultTransaction = transactionHistoryDao.findById(transaction.getId()).orElseThrow(HistoricalTransactionNotFoundException::new);
+        tradeHistoryDao.save(transaction);
+        TradeHistory resultTransaction = tradeHistoryDao.findById(transaction.getId()).orElseThrow(HistoricalTransactionNotFoundException::new);
         //Then
         assertEquals(resultTransaction.getPrice().doubleValue(), 123.00);
         assertEquals(resultTransaction.getCryptocurrency(), "BTCETH");
         assertEquals(resultTransaction.getTransactionType(), TransactionType.BUY);
         //CleanUp
         userDao.deleteById(user.getId());
-        transactionHistoryDao.deleteById(transaction.getId());
+        tradeHistoryDao.deleteById(transaction.getId());
     }
 }

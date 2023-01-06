@@ -1,8 +1,7 @@
 package com.sensei.service;
 
 import com.sensei.dto.WithdrawDto;
-import com.sensei.entity.Cryptocurrency;
-import com.sensei.entity.WalletCrypto;
+import com.sensei.entity.*;
 import com.sensei.exception.NotEnoughFoundsException;
 import com.sensei.exception.WalletCryptoNotFoundException;
 import com.sensei.repository.WalletCryptoDao;
@@ -11,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -18,25 +18,36 @@ import java.math.BigDecimal;
 public class WalletCryptoService {
 
     private final WalletCryptoDao walletCryptoDao;
+    private final CryptoFlowHistService cryptoFlowHistService;
 
     public WalletCrypto findById(Long walletCryptoId) throws WalletCryptoNotFoundException {
         return walletCryptoDao.findById(walletCryptoId).orElseThrow(WalletCryptoNotFoundException::new);
     }
 
-    public String withdrawCrypto(Long walletCryptoId, WithdrawDto withdrawDto) throws WalletCryptoNotFoundException, NotEnoughFoundsException {
+    public WalletCrypto withdrawCrypto(Long walletCryptoId, WithdrawDto withdrawDto) throws WalletCryptoNotFoundException, NotEnoughFoundsException {
         var walletCrypto = walletCryptoDao.findById(walletCryptoId).orElseThrow(WalletCryptoNotFoundException::new);
         var quantityUSD = withdrawDto.getQuantity();
+        var user = walletCrypto.getWallet().getUser();
         if(walletCrypto.getQuantity().compareTo(quantityUSD) < 0) {
+            log.error("Not enough founds to process withdraw for user: " + user.getUsername()
+            + ". Actual balance: " + walletCrypto.getQuantity());
             throw new NotEnoughFoundsException();
         }
         walletCrypto.setQuantity(walletCrypto.getQuantity().subtract(quantityUSD));
-        processWithdraw(walletCrypto.getCryptocurrency(), withdrawDto.getAccountNumber(), quantityUSD);
-        walletCryptoDao.save(walletCrypto);
-        return quantityUSD + walletCrypto.getCryptocurrency().getSymbol() + " has been successfully sent on the account number: " + withdrawDto.getAccountNumber();
+        processWithdraw(user, walletCrypto.getCryptocurrency(), withdrawDto);
+        return walletCryptoDao.save(walletCrypto);
     }
 
-    private void processWithdraw(Cryptocurrency crypto, String address, BigDecimal quantity) {
-        log.info(quantity + " " + crypto.getSymbol() + " has been successfully sent on the address: " + address);
+    private void processWithdraw(User user, Cryptocurrency crypto, WithdrawDto withdrawDto) {
+        CryptoFlowHistory withdraw = new CryptoFlowHistory();
+        withdraw.setUser(user);
+        withdraw.setType(OperationType.DEBIT);
+        withdraw.setSymbol(crypto.getSymbol());
+        withdraw.setQuantity(withdrawDto.getQuantity());
+        withdraw.setAddressTo(withdrawDto.getAccountNumber());
+        withdraw.setTime(LocalDateTime.now());
+        cryptoFlowHistService.save(withdraw);
+        log.info(withdrawDto.getQuantity() + " " + crypto.getSymbol() + " has been successfully sent on the address: " + withdrawDto.getAccountNumber());
     }
 
     public String getWalletCryptoAddress(Long walletCryptoId) throws WalletCryptoNotFoundException {

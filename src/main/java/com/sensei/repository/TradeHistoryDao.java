@@ -9,7 +9,7 @@ import java.util.List;
 
 @Transactional
 @Repository
-public interface TransactionHistoryDao extends CrudRepository<TradeHistory, Long> {
+public interface TradeHistoryDao extends CrudRepository<TradeHistory, Long> {
 
     @Override
     TradeHistory save(TradeHistory tradeHistory);

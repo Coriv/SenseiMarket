@@ -31,11 +31,11 @@ public class WalletCryptoController {
     }
 
     @PutMapping("/{walletCryptoId}/withdraw")
-    public ResponseEntity<String> withdrawCryptocurrency(
+    public ResponseEntity<WalletCryptoDto> withdrawCryptocurrency(
             @PathVariable Long walletCryptoId,
             @RequestBody WithdrawDto withDrawDto) throws WalletCryptoNotFoundException, NotEnoughFoundsException {
-        var info = walletCryptoService.withdrawCrypto(walletCryptoId, withDrawDto);
-        return ResponseEntity.ok(info);
+        var walletCrypto = walletCryptoService.withdrawCrypto(walletCryptoId, withDrawDto);
+        return ResponseEntity.ok(walletCryptoMapper.mapToWalletCryptoDto(walletCrypto));
     }
 }
 

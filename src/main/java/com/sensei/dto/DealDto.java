@@ -2,12 +2,12 @@ package com.sensei.dto;
 
 import com.sensei.config.Prototype;
 import com.sensei.entity.TransactionType;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import java.math.BigDecimal;
 
 @Data
+@EqualsAndHashCode(callSuper = false)
 @Builder
 public class DealDto extends Prototype<DealDto> {
     private String cryptoSymbol;

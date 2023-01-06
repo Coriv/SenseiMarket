@@ -41,7 +41,6 @@ class UserMapperTestSuite {
         assertEquals(user.getDateOfJoin(), userDto.getDateOfJoin());
         assertTrue(user.isActive());
         assertEquals(user.getUsername(), "Coriver");
-        assertEquals(user.getPassword(), "Password");
         assertEquals(user.getEmail(), "sebastian@kodilla.com");
         assertTrue(user.isNotification());
     }

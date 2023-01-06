@@ -4,7 +4,7 @@ import com.sensei.dto.DealDto;
 import com.sensei.entity.TradeHistory;
 import com.sensei.entity.TransactionType;
 import com.sensei.entity.User;
-import com.sensei.repository.TransactionHistoryDao;
+import com.sensei.repository.TradeHistoryDao;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class TransactionHistoryDbService {
 
-    private final TransactionHistoryDao historyDao;
+    private final TradeHistoryDao historyDao;
 
     public void saveTransaction(User user, DealDto dealDto) {
         TradeHistory transaction = new TradeHistory();
