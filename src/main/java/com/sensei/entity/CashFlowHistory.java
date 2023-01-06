@@ -3,7 +3,6 @@ package com.sensei.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,40 +11,32 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class TransactionHistory {
-
+public class CashFlowHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
     private Long id;
-
+    @ManyToOne(cascade = CascadeType.PERSIST,
+            fetch = FetchType.LAZY)
     @NotNull
-    @Column(updatable = false)
-    private TransactionType transactionType;
-
-    @NotNull
-    @Column(updatable = false)
-    private String cryptocurrency;
-
-    @PositiveOrZero
-    @Column(updatable = false)
-    private BigDecimal quantity;
-
-    @PositiveOrZero
-    @Column(updatable = false)
-    private BigDecimal price;
-
-    @PositiveOrZero
-    @Column(updatable = false)
-    private BigDecimal value;
-    @ManyToOne(fetch = FetchType.LAZY,
-            optional = false)
     @JoinColumn(updatable = false)
     private User user;
 
-    @NotNull
     @Column(updatable = false)
-    private LocalDateTime transactionTime;
+    @NotNull
+    private TransactionType type;
+
+    @Column(updatable = false)
+    @PositiveOrZero
+    private BigDecimal quantityUSD;
+
+    @Column(updatable = false)
+    @PositiveOrZero
+    private BigDecimal quantityPLN;
+
+    @Column(updatable = false)
+    private String toAccount;
+
+    @Column(updatable = false)
+    private LocalDateTime time;
 }

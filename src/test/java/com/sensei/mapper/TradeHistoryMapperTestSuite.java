@@ -1,14 +1,13 @@
 package com.sensei.mapper;
 
-import com.sensei.dto.TransactionHistoryDto;
-import com.sensei.entity.TransactionHistory;
+import com.sensei.dto.TradeHistoryDto;
+import com.sensei.entity.TradeHistory;
 import com.sensei.entity.TransactionType;
 import com.sensei.entity.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import javax.swing.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -17,7 +16,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class TransactionHistoryMapperTestSuite {
+class TradeHistoryMapperTestSuite {
 
     @Autowired
     private TransactionHistoryMapper transactionMapper;
@@ -26,7 +25,7 @@ class TransactionHistoryMapperTestSuite {
     void mapToTransactionDtoTest() {
         //Given
         User user = new User();
-        TransactionHistory transaction = new TransactionHistory();
+        TradeHistory transaction = new TradeHistory();
         transaction.setTransactionType(TransactionType.SELL);
         transaction.setCryptocurrency("BTC");
         transaction.setQuantity(BigDecimal.valueOf(100));
@@ -35,7 +34,7 @@ class TransactionHistoryMapperTestSuite {
         transaction.setUser(user);
         transaction.setTransactionTime(LocalDateTime.now());
         //When
-        TransactionHistoryDto transactionDto = transactionMapper.mapToTransactionDto(transaction);
+        TradeHistoryDto transactionDto = transactionMapper.mapToTransactionDto(transaction);
         //Then
         assertEquals(transactionDto.getId(), transactionDto.getId());
         assertEquals(transactionDto.getTransactionType(), TransactionType.SELL);
@@ -50,7 +49,7 @@ class TransactionHistoryMapperTestSuite {
     @Test
     void mapToTransactionsListDtoTest() {
         User user = new User();
-        TransactionHistory transaction = new TransactionHistory();
+        TradeHistory transaction = new TradeHistory();
         transaction.setTransactionType(TransactionType.SELL);
         transaction.setCryptocurrency("BTC");
         transaction.setQuantity(BigDecimal.valueOf(100));
@@ -58,9 +57,9 @@ class TransactionHistoryMapperTestSuite {
         transaction.setValue(BigDecimal.valueOf(500));
         transaction.setUser(user);
         transaction.setTransactionTime(LocalDateTime.now());
-        List<TransactionHistory> transactions = Arrays.asList(transaction);
+        List<TradeHistory> transactions = Arrays.asList(transaction);
         //When
-        List<TransactionHistoryDto> transactionsDto = transactionMapper.mapToTransactionsListDto(transactions);
+        List<TradeHistoryDto> transactionsDto = transactionMapper.mapToTransactionsListDto(transactions);
         //Then
         System.out.println(transactionsDto);
         assertEquals(transactionsDto.size(), 1);

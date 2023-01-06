@@ -31,7 +31,6 @@ class CashWalletDbServiceTestSuite {
     private CashWalletDao cashWalletDao;
     @Mock
     private NbpService nbpService;
-
     @Test
     void getCashWalletTest() throws CashWalletNotFoundException {
         //Given
@@ -46,7 +45,6 @@ class CashWalletDbServiceTestSuite {
         assertEquals(resultCashWallet.getWallet().getId(), wallet.getId());
         assertEquals(resultCashWallet.getQuantity(), BigDecimal.valueOf(1000));
     }
-
     @Test
     void withdrawMoreMoneyThenIsInWalletTest() throws CashWalletNotFoundException, NotEnoughFoundsException {
         //Given
@@ -70,7 +68,7 @@ class CashWalletDbServiceTestSuite {
     }
 
     @Test
-    void depositMoneyTest() throws CashWalletNotFoundException, NotEnoughFoundsException {
+    void depositMoneyTest() throws CashWalletNotFoundException {
         //Given
         Wallet wallet = new Wallet();
         CashWallet cashWallet = new CashWallet();

@@ -1,21 +1,20 @@
 package com.sensei.repository;
 
-import com.sensei.entity.TransactionHistory;
+import com.sensei.entity.TradeHistory;
 import jakarta.transaction.Transactional;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Transactional
 @Repository
-public interface TransactionHistoryDao extends CrudRepository<TransactionHistory, Long> {
+public interface TransactionHistoryDao extends CrudRepository<TradeHistory, Long> {
 
     @Override
-    TransactionHistory save(TransactionHistory transactionHistory);
+    TradeHistory save(TradeHistory tradeHistory);
 
-    List<TransactionHistory> findAllByCryptocurrency(String symbol);
+    List<TradeHistory> findAllByCryptocurrency(String symbol);
 
-    List<TransactionHistory> findAllByUserId(Long userId);
+    List<TradeHistory> findAllByUserId(Long userId);
 }

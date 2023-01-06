@@ -1,7 +1,7 @@
 package com.sensei.entitiy;
 
+import com.sensei.entity.TradeHistory;
 import com.sensei.entity.User;
-import com.sensei.entity.TransactionHistory;
 import com.sensei.entity.TransactionType;
 import com.sensei.exception.HistoricalTransactionNotFoundException;
 import com.sensei.repository.TransactionHistoryDao;
@@ -12,7 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -36,7 +35,7 @@ public class TransactionsHistoryTestSuite {
         user.setUsername("Coriver");
         user.setPassword("Password");
         user.setEmail("sebastian@kodilla.com");
-        TransactionHistory transaction = new TransactionHistory();
+        TradeHistory transaction = new TradeHistory();
         transaction.setTransactionType(TransactionType.BUY);
         transaction.setCryptocurrency("BTCETH");
         transaction.setPrice(BigDecimal.valueOf(123));
@@ -48,7 +47,7 @@ public class TransactionsHistoryTestSuite {
         //When
         userDao.save(user);
         transactionHistoryDao.save(transaction);
-        TransactionHistory resultTransaction = transactionHistoryDao.findById(transaction.getId()).orElseThrow(HistoricalTransactionNotFoundException::new);
+        TradeHistory resultTransaction = transactionHistoryDao.findById(transaction.getId()).orElseThrow(HistoricalTransactionNotFoundException::new);
         //Then
         assertEquals(resultTransaction.getPrice().doubleValue(), 123.00);
         assertEquals(resultTransaction.getCryptocurrency(), "BTCETH");

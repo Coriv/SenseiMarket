@@ -1,7 +1,7 @@
 package com.sensei.service;
 
 import com.sensei.dto.DealDto;
-import com.sensei.entity.TransactionHistory;
+import com.sensei.entity.TradeHistory;
 import com.sensei.entity.TransactionType;
 import com.sensei.entity.User;
 import com.sensei.repository.TransactionHistoryDao;
@@ -20,7 +20,7 @@ public class TransactionHistoryDbService {
     private final TransactionHistoryDao historyDao;
 
     public void saveTransaction(User user, DealDto dealDto) {
-        TransactionHistory transaction = new TransactionHistory();
+        TradeHistory transaction = new TradeHistory();
         transaction.setUser(user);
         transaction.setTransactionType(dealDto.getTransactionType());
         transaction.setCryptocurrency(dealDto.getCryptoSymbol());
@@ -31,9 +31,9 @@ public class TransactionHistoryDbService {
         historyDao.save(transaction);
     }
 
-    public List<TransactionHistory> findByUserIdOptionalParams(
+    public List<TradeHistory> findByUserIdOptionalParams(
             Long userId, String symbol, TransactionType type, BigDecimal maxValue, BigDecimal minValue) {
-        List<TransactionHistory> history = historyDao.findAllByUserId(userId);
+        List<TradeHistory> history = historyDao.findAllByUserId(userId);
         if (symbol != null) {
             history = history.stream()
                     .filter(transaction -> transaction.getCryptocurrency().equals(symbol))

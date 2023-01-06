@@ -1,8 +1,5 @@
 package com.sensei.entity;
 
-import com.sensei.mailService.Mail;
-import com.sensei.mailService.MailService;
-import com.sensei.observer.Observer;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -10,7 +7,6 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -67,11 +63,17 @@ public class User implements UserDetails {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Wallet wallet;
 
-    @OneToMany(targetEntity = TransactionHistory.class,
+    @OneToMany(targetEntity = TradeHistory.class,
             cascade = CascadeType.REMOVE,
             fetch = FetchType.LAZY,
             mappedBy = "user")
-    private List<TransactionHistory> transactions = new ArrayList<>();
+    private List<TradeHistory> transactions = new ArrayList<>();
+
+    @OneToMany(targetEntity = CashFlowHistory.class,
+            cascade = CascadeType.REMOVE,
+            fetch = FetchType.LAZY,
+            mappedBy = "user")
+    private List<CashFlowHistory> cashFlows = new ArrayList<>();
 
     private String authority;
 

@@ -10,8 +10,6 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
-
-@AllArgsConstructor
 @Data
 @Builder
 public class CashWalletDto {

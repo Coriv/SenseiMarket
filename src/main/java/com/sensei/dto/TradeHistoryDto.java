@@ -3,15 +3,13 @@ package com.sensei.dto;
 import com.sensei.entity.TransactionType;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
-import lombok.Builder;
 import lombok.Data;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
-public class TransactionHistoryDto {
+public class TradeHistoryDto {
     private final Long id;
     @NotNull
     private final TransactionType transactionType;
