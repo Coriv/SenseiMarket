@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -30,7 +31,7 @@ public class WalletDaoTestSuite {
         user.setLastName("Brown");
         user.setDateOfJoin(LocalDateTime.now());
         user.setActive(true);
-        user.setUsername("Coriver@Testdf");
+        user.setUsername("Coriver@Testdf" + new Random().nextInt());
         user.setPassword("Password");
         user.setEmail("sebastian@kodilla.com");
         user.setPESEL("12345678910");

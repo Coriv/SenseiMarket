@@ -13,31 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class WalletMapper {
-
-    private final WalletDao walletDao;
-    private final UserDao userDao;
-    private final WalletCryptoDao walletCryptoDao;
-    private final TradeDao tradeDao;
-    private final CashWalletDao cashWalletDao;
-    public Wallet mapToWallet(WalletDto walletDto) throws InvalidUserIdException {
-        Wallet wallet;
-        Long walletId = walletDto.getId();
-        if (walletId != null) {
-            wallet = walletDao.findById(walletDto.getId()).orElse(new Wallet());
-            List<WalletCrypto> cryptos = walletCryptoDao.findAllByWalletId(walletId);
-            wallet.setCryptosList(cryptos);
-            List<Trade> trades = tradeDao.findAllByWalletId(walletId);
-            wallet.setTrades(trades);
-        } else {
-            wallet = new Wallet();
-        }
-        wallet.setUser(userDao.findById(walletDto.getUserId()).orElseThrow(InvalidUserIdException::new));
-        wallet.setActive(walletDto.isActive());
-        return wallet;
-    }
-
     public WalletDto mapToWalletDto(Wallet wallet) {
         return WalletDto.builder()
                 .id(wallet.getId())

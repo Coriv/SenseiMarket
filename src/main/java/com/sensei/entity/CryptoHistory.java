@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Entity
 @Data
 @NoArgsConstructor
-public class CryptoFlowHistory {
+public class CryptoHistory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

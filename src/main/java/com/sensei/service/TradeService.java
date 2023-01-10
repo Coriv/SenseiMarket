@@ -3,7 +3,6 @@ package com.sensei.service;
 import com.sensei.dto.DealDto;
 import com.sensei.entity.*;
 import com.sensei.exception.*;
-import com.sensei.observer.Observable;
 import com.sensei.observer.Observer;
 import com.sensei.repository.TradeDao;
 import com.sensei.repository.UserDao;
@@ -19,24 +18,24 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class TradeDbService {
+public class TradeService {
 
     private final TradeDao tradeDao;
     private final UserDao userDao;
     private final WalletDao walletDao;
-    private final TransactionHistoryDbService historyService;
+    private final TradeHistoryService historyService;
     private String cryptoSymbol;
     private List<Observer> observers = new ArrayList<>();
 
     public List<Trade> findOpenTrades(String symbol, TransactionType type) {
         List<Trade> trades = tradeDao.findAllByOpenIsTrue();
         if (symbol != null) {
-            trades = tradeDao.findAllByOpenIsTrue().stream()
+            trades = trades.stream()
                     .filter(trade -> trade.getCryptocurrency().getSymbol().equals(symbol))
                     .collect(Collectors.toList());
         }
         if (type != null) {
-            trades = tradeDao.findAllByOpenIsTrue().stream()
+            trades = trades.stream()
                     .filter(trade -> trade.getTransactionType().equals(type))
                     .collect(Collectors.toList());
         }
@@ -141,7 +140,7 @@ public class TradeDbService {
     }
 
 
-    public void processDealSell(Trade trade, Wallet wallet2, BigDecimal quantity) throws WalletCryptoNotFoundException, NotEnoughFoundsException {
+    private void processDealSell(Trade trade, Wallet wallet2, BigDecimal quantity) throws WalletCryptoNotFoundException, NotEnoughFoundsException {
         cryptoSymbol = trade.getCryptocurrency().getSymbol();
         var wallet1 = trade.getWallet();
         var walletCrypto2 = fetchWalletCrypto(wallet2, cryptoSymbol);

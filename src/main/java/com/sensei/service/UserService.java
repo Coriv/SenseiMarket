@@ -16,12 +16,12 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class UserDbService {
+public class UserService {
 
     private final UserDao userDao;
     private final UserMapper userMapper;
-    private final CryptocurrencyDbService cryptoService;
-    private final WalletDbService walletDbService;
+    private final CryptocurrencyService cryptoService;
+    private final WalletService walletService;
 
     public User findUserById(Long id) throws InvalidUserIdException {
         return userDao.findById(id).orElseThrow(InvalidUserIdException::new);
@@ -36,7 +36,7 @@ public class UserDbService {
         user.setDateOfJoin(LocalDateTime.now());
         var createdUser = userDao.save(user);
         if (user.getPESEL() != null && user.getIdCard() != null) {
-            walletDbService.createWallet(createdUser.getId());
+            walletService.createWallet(createdUser.getId());
         }
         return createdUser;
     }

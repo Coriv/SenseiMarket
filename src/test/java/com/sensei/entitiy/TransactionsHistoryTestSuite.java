@@ -1,8 +1,8 @@
 package com.sensei.entitiy;
 
 import com.sensei.entity.TradeHistory;
-import com.sensei.entity.User;
 import com.sensei.entity.TransactionType;
+import com.sensei.entity.User;
 import com.sensei.exception.HistoricalTransactionNotFoundException;
 import com.sensei.repository.TradeHistoryDao;
 import com.sensei.repository.UserDao;
@@ -12,8 +12,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Random;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 public class TransactionsHistoryTestSuite {
@@ -32,7 +33,7 @@ public class TransactionsHistoryTestSuite {
         user.setLastName("Boron");
         user.setDateOfJoin(LocalDateTime.now());
         user.setActive(true);
-        user.setUsername("Coriver");
+        user.setUsername("Coriver" + new Random().nextInt());
         user.setPassword("Password");
         user.setEmail("sebastian@kodilla.com");
         TradeHistory transaction = new TradeHistory();
@@ -54,6 +55,5 @@ public class TransactionsHistoryTestSuite {
         assertEquals(resultTransaction.getTransactionType(), TransactionType.BUY);
         //CleanUp
         userDao.deleteById(user.getId());
-        tradeHistoryDao.deleteById(transaction.getId());
     }
 }

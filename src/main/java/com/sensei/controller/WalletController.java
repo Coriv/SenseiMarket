@@ -9,7 +9,7 @@ import com.sensei.exception.WalletAlreadyExistException;
 import com.sensei.exception.WalletNotFoundException;
 import com.sensei.mapper.WalletCryptoMapper;
 import com.sensei.mapper.WalletMapper;
-import com.sensei.service.WalletDbService;
+import com.sensei.service.WalletService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,19 +21,19 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WalletController {
 
-    private final WalletDbService walletDbService;
+    private final WalletService walletService;
     private final WalletCryptoMapper walletCryptoMapper;
     private final WalletMapper walletMapper;
 
     @PostMapping
     public ResponseEntity<Void> createWallet(@RequestParam Long userId) throws InvalidUserIdException, WalletAlreadyExistException, UserNotVerifyException {
-        walletDbService.createWallet(userId);
+        walletService.createWallet(userId);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{walletId}")
     public ResponseEntity<WalletDto> fetchWalletContent(@PathVariable Long walletId) throws WalletNotFoundException {
-        var wallet = walletDbService.getWalletContent(walletId);
+        var wallet = walletService.getWalletContent(walletId);
         return ResponseEntity.ok(walletMapper.mapToWalletDto(wallet));
     }
 
@@ -42,7 +42,7 @@ public class WalletController {
     public ResponseEntity<List<WalletCryptoDto>> fetchCryptosOptionalBySymbol
             (@PathVariable Long walletId,
              @RequestParam (required = false) String... symbols) throws WalletNotFoundException {
-        List<WalletCrypto> cryptos = walletDbService.getCryptosBySymbol(walletId, symbols);
+        List<WalletCrypto> cryptos = walletService.getCryptosBySymbol(walletId, symbols);
         return ResponseEntity.ok(walletCryptoMapper.mapToWalletCryptoListDto(cryptos));
     }
 }

@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class TransactionHistoryDbService {
+public class TradeHistoryService {
 
     private final TradeHistoryDao historyDao;
 

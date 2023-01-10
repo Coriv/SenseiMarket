@@ -5,7 +5,7 @@ import com.sensei.entity.Cryptocurrency;
 import com.sensei.exception.CryptoIsObjectOfTradingException;
 import com.sensei.exception.CryptocurrencyNotFoundException;
 import com.sensei.mapper.CryptocurrencyMapper;
-import com.sensei.service.CryptocurrencyDbService;
+import com.sensei.service.CryptocurrencyService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -19,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CryptocurrencyController {
 
-    private final CryptocurrencyDbService cryptoDbService;
+    private final CryptocurrencyService cryptoDbService;
     private final CryptocurrencyMapper cryptoMapper;
 
     @GetMapping

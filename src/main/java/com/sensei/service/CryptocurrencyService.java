@@ -10,7 +10,6 @@ import com.sensei.observer.Observable;
 import com.sensei.observer.Observer;
 import com.sensei.repository.CryptocurrencyDao;
 import com.sensei.repository.UserDao;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +18,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class CryptocurrencyDbService implements Observable {
+public class CryptocurrencyService implements Observable {
 
     private final CryptocurrencyDao cryptocurrencyDao;
     private final UserDao userDao;

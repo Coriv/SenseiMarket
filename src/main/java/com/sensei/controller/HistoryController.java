@@ -1,16 +1,16 @@
 package com.sensei.controller;
 
-import com.sensei.dto.CashFlowHistoryDto;
-import com.sensei.dto.CryptoFlowHistoryDto;
+import com.sensei.dto.CashHistoryDto;
+import com.sensei.dto.CryptoHistoryDto;
 import com.sensei.dto.TradeHistoryDto;
 import com.sensei.entity.TradeHistory;
 import com.sensei.entity.TransactionType;
-import com.sensei.mapper.CashFlowHistMapper;
-import com.sensei.mapper.CryptoFlowHistoryMapper;
+import com.sensei.mapper.CashHistMapper;
+import com.sensei.mapper.CryptoHistMapper;
 import com.sensei.mapper.TransactionHistoryMapper;
-import com.sensei.service.CashFlowHistService;
-import com.sensei.service.CryptoFlowHistService;
-import com.sensei.service.TransactionHistoryDbService;
+import com.sensei.service.CashHistService;
+import com.sensei.service.CryptoHistService;
+import com.sensei.service.TradeHistoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,12 +23,12 @@ import java.util.List;
 @RequestMapping("/v1/history")
 public class HistoryController {
 
-    private final TransactionHistoryDbService historyService;
+    private final TradeHistoryService historyService;
     private final TransactionHistoryMapper historyMapper;
-    private final CashFlowHistService cashFlowHistService;
-    private final CashFlowHistMapper cashFlowHistMapper;
-    private final CryptoFlowHistService cryptoFlowHistService;
-    private final CryptoFlowHistoryMapper cryptoFlowHistoryMapper;
+    private final CashHistService cashHistService;
+    private final CashHistMapper cashHistMapper;
+    private final CryptoHistService cryptoHistService;
+    private final CryptoHistMapper cryptoHistMapper;
 
     @GetMapping("/{userId}")
     public ResponseEntity<List<TradeHistoryDto>> fetchUserHistoryOptionalParams
@@ -43,16 +43,16 @@ public class HistoryController {
     }
 
     @GetMapping("/cash/{userId}")
-    public ResponseEntity<List<CashFlowHistoryDto>> fetchCashFlowHistoryByUser(
+    public ResponseEntity<List<CashHistoryDto>> fetchCashFlowHistoryByUser(
             @PathVariable Long userId) {
-        var cashFlowList = cashFlowHistService.getAllByUserId(userId);
-        return ResponseEntity.ok(cashFlowHistMapper.mapToCashHistoryDtoList(cashFlowList));
+        var cashFlowList = cashHistService.getAllByUserId(userId);
+        return ResponseEntity.ok(cashHistMapper.mapToCashHistoryDtoList(cashFlowList));
     }
 
     @GetMapping("/crypto/{userId}")
-    public ResponseEntity<List<CryptoFlowHistoryDto>> fetchCryptoFlowHistoryByUser(
+    public ResponseEntity<List<CryptoHistoryDto>> fetchCryptoFlowHistoryByUser(
             @PathVariable Long userId) {
-        var cryptoFlowList = cryptoFlowHistService.getAllByUserId(userId);
-        return ResponseEntity.ok(cryptoFlowHistoryMapper.mapToCryptoFlowHistList(cryptoFlowList));
+        var cryptoFlowList = cryptoHistService.getAllByUserId(userId);
+        return ResponseEntity.ok(cryptoHistMapper.mapToCryptoFlowHistList(cryptoFlowList));
     }
 }

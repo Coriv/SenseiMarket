@@ -1,6 +1,6 @@
 package com.sensei.repository;
 
-import com.sensei.entity.CryptoFlowHistory;
+import com.sensei.entity.CryptoHistory;
 import jakarta.transaction.Transactional;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -9,10 +9,10 @@ import java.util.List;
 
 @Transactional
 @Repository
-public interface CryptoFlowHistoryDao extends CrudRepository<CryptoFlowHistory, Long> {
+public interface CryptoHistoryDao extends CrudRepository<CryptoHistory, Long> {
 
     @Override
-    CryptoFlowHistory save(CryptoFlowHistory cryptoFlowHistory);
+    CryptoHistory save(CryptoHistory cryptoHistory);
 
-    List<CryptoFlowHistory> findAllByUser(Long userId);
+    List<CryptoHistory> findAllByUserId(Long userId);
 }

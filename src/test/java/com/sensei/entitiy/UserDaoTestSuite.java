@@ -16,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -35,7 +36,7 @@ public class UserDaoTestSuite {
         user.setLastName("Brown");
         user.setDateOfJoin(LocalDateTime.now());
         user.setActive(true);
-        user.setUsername("Coriver");
+        user.setUsername("Coriver" + new Random().nextInt());
         user.setPassword("Password");
         user.setEmail("sebastian@kodilla.com");
         user.setPESEL("12345678910");

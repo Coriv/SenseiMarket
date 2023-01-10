@@ -1,20 +1,16 @@
 package com.sensei.dto;
 
 import com.sensei.entity.OperationType;
-import com.sensei.entity.TransactionType;
-import com.sensei.entity.User;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @Getter
-public class CryptoFlowHistoryDto  {
+public class CryptoHistoryDto {
     @NotNull
     private final Long id;
     @NotNull

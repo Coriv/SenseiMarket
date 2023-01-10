@@ -69,11 +69,17 @@ public class User implements UserDetails {
             mappedBy = "user")
     private List<TradeHistory> transactions = new ArrayList<>();
 
-    @OneToMany(targetEntity = CashFlowHistory.class,
+    @OneToMany(targetEntity = CashHistory.class,
             cascade = CascadeType.REMOVE,
             fetch = FetchType.LAZY,
             mappedBy = "user")
-    private List<CashFlowHistory> cashFlows = new ArrayList<>();
+    private List<CashHistory> cashFlows = new ArrayList<>();
+
+    @OneToMany(targetEntity = CryptoHistory.class,
+            cascade = CascadeType.REMOVE,
+            fetch = FetchType.LAZY,
+            mappedBy = "user")
+    private List<CryptoHistory> cryptoFlows = new ArrayList<>();
 
     private String authority;
 

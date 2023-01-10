@@ -1,10 +1,7 @@
 package com.sensei.service;
 
 import com.sensei.config.AdminConfig;
-import com.sensei.entity.Cryptocurrency;
-import com.sensei.entity.User;
-import com.sensei.entity.Wallet;
-import com.sensei.entity.WalletCrypto;
+import com.sensei.entity.*;
 import com.sensei.exception.InvalidUserIdException;
 import com.sensei.exception.UserNotVerifyException;
 import com.sensei.exception.WalletAlreadyExistException;
@@ -24,16 +21,16 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-class WalletDbServiceTestSuite {
+class WalletServiceTestSuite {
     @InjectMocks
-    private WalletDbService dbService;
+    private WalletService dbService;
     @Mock
     private UserDao userDao;
     @Mock
@@ -48,6 +45,8 @@ class WalletDbServiceTestSuite {
         User user = new User();
         user.setFirstName("Sebastian");
         user.setLastName("Brown");
+        user.setPESEL("213331323");
+        user.setIdCard("Add21");
         Wallet wallet = new Wallet();
         wallet.setActive(true);
         Cryptocurrency btc = new Cryptocurrency("BTC", "Bitcoin");
@@ -123,6 +122,26 @@ class WalletDbServiceTestSuite {
         assertEquals(cryptosBySymbol.size(), 2);
         assertEquals(cryptosBySymbol.get(0).getCryptocurrency().getSymbol(), "BTC");
         assertEquals(cryptosBySymbol.get(1).getCryptocurrency().getSymbol(), "ETH");
+    }
 
+    @Test
+    void getWalletContentTest() throws WalletNotFoundException {
+        Wallet wallet = new Wallet();
+        Cryptocurrency btc = new Cryptocurrency("BTC", "Bitcoin");
+        CashWallet cashWallet = new CashWallet();
+        WalletCrypto walletCrypto = new WalletCrypto();
+        walletCrypto.setCryptocurrency(btc);
+        User user = new User();
+        user.setId(44L);
+        wallet.setUser(user);
+        wallet.setCashWallet(cashWallet);
+        wallet.setCryptosList(Arrays.asList(walletCrypto));
+        wallet.setActive(true);
+        when(walletDao.findById(any())).thenReturn(Optional.of(wallet));
+        //when
+        var resultWallet = dbService.getWalletContent(wallet.getId());
+        //then
+        assertTrue(resultWallet.isActive());
+        assertEquals(44L, resultWallet.getUser().getId());
     }
 }

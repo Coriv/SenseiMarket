@@ -1,16 +1,16 @@
 package com.sensei.mapper;
 
-import com.sensei.dto.CashFlowHistoryDto;
-import com.sensei.entity.CashFlowHistory;
+import com.sensei.dto.CashHistoryDto;
+import com.sensei.entity.CashHistory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class CashFlowHistMapper {
-    public CashFlowHistoryDto mapToCashHistoryDto(CashFlowHistory cashHistory) {
-        CashFlowHistoryDto cashHistoryDto = new CashFlowHistoryDto(
+public class CashHistMapper {
+    public CashHistoryDto mapToCashHistoryDto(CashHistory cashHistory) {
+        CashHistoryDto cashHistoryDto = new CashHistoryDto(
                 cashHistory.getId(),
                 cashHistory.getUser().getId(),
                 cashHistory.getType(),
@@ -23,7 +23,7 @@ public class CashFlowHistMapper {
         return cashHistoryDto;
     }
 
-    public List<CashFlowHistoryDto> mapToCashHistoryDtoList(List<CashFlowHistory> cashHistoryList) {
+    public List<CashHistoryDto> mapToCashHistoryDtoList(List<CashHistory> cashHistoryList) {
         return cashHistoryList.stream()
                 .map(this::mapToCashHistoryDto)
                 .collect(Collectors.toList());

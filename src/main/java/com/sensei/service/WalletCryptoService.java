@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Service
@@ -18,7 +17,7 @@ import java.time.LocalDateTime;
 public class WalletCryptoService {
 
     private final WalletCryptoDao walletCryptoDao;
-    private final CryptoFlowHistService cryptoFlowHistService;
+    private final CryptoHistService cryptoHistService;
 
     public WalletCrypto findById(Long walletCryptoId) throws WalletCryptoNotFoundException {
         return walletCryptoDao.findById(walletCryptoId).orElseThrow(WalletCryptoNotFoundException::new);
@@ -39,14 +38,14 @@ public class WalletCryptoService {
     }
 
     private void processWithdraw(User user, Cryptocurrency crypto, WithdrawDto withdrawDto) {
-        CryptoFlowHistory withdraw = new CryptoFlowHistory();
+        CryptoHistory withdraw = new CryptoHistory();
         withdraw.setUser(user);
         withdraw.setType(OperationType.DEBIT);
         withdraw.setSymbol(crypto.getSymbol());
         withdraw.setQuantity(withdrawDto.getQuantity());
         withdraw.setAddressTo(withdrawDto.getAccountNumber());
         withdraw.setTime(LocalDateTime.now());
-        cryptoFlowHistService.save(withdraw);
+        cryptoHistService.save(withdraw);
         log.info(withdrawDto.getQuantity() + " " + crypto.getSymbol() + " has been successfully sent on the address: " + withdrawDto.getAccountNumber());
     }
 

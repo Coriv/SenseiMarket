@@ -4,10 +4,7 @@ import com.sensei.entity.Cryptocurrency;
 import com.sensei.entity.User;
 import com.sensei.entity.Wallet;
 import com.sensei.entity.WalletCrypto;
-import com.sensei.exception.InvalidUserIdException;
-import com.sensei.exception.NotEmptyWalletException;
-import com.sensei.exception.UserNotVerifyException;
-import com.sensei.exception.WalletAlreadyExistException;
+import com.sensei.exception.*;
 import com.sensei.repository.UserDao;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,10 +24,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class UserDbServiceTestSuite {
+class UserServiceTestSuite {
 
     @InjectMocks
-    private UserDbService dbService;
+    private UserService dbService;
     @Mock
     private UserDao userDao;
 
@@ -160,5 +157,21 @@ class UserDbServiceTestSuite {
         List<String> usernames = dbService.getAllUsernames();
         //Then
         assertEquals(usernames.size(), 2);
+    }
+
+    @Test
+    void findWalletIdTest() throws UserNotFoundException {
+        User user = new User();
+        user.setUsername("dd");
+        user.setId(10L);
+        Wallet wallet = new Wallet();
+        wallet.setUser(user);
+        wallet.setId(66L);
+        user.setWallet(wallet);
+        //When
+        when(userDao.findByUsername(any())).thenReturn(Optional.of(user));
+        var walletId = dbService.findWalletId("dd");
+        //then
+        assertEquals(walletId, 66L);
     }
 }

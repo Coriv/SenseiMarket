@@ -4,7 +4,7 @@ import com.sensei.config.AdminConfig;
 import com.sensei.dto.CryptoPriceDto;
 import com.sensei.entity.Cryptocurrency;
 import com.sensei.exception.EmptyCryptocurrencyDatabaseException;
-import com.sensei.service.CryptocurrencyDbService;
+import com.sensei.service.CryptocurrencyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ public class BinancePairsService {
 
     @Qualifier("BIN")
     private final RestTemplate restTemplate;
-    private final CryptocurrencyDbService cryptoDbService;
+    private final CryptocurrencyService cryptoDbService;
     private final AdminConfig adminConfig;
     public List<CryptoPriceDto> getPairLastPrice() throws EmptyCryptocurrencyDatabaseException {
         CryptoPriceDto[] pairs = restTemplate.getForObject(buildUrl(), CryptoPriceDto[].class);

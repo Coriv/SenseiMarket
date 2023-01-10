@@ -1,6 +1,6 @@
 package com.sensei.repository;
 
-import com.sensei.entity.CashFlowHistory;
+import com.sensei.entity.CashHistory;
 import jakarta.transaction.Transactional;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -9,10 +9,10 @@ import java.util.List;
 
 @Transactional
 @Repository
-public interface CashFlowHistoryDao extends CrudRepository<CashFlowHistory, Long> {
+public interface CashHistoryDao extends CrudRepository<CashHistory, Long> {
 
     @Override
-    CashFlowHistory save(CashFlowHistory cashFlowHistory);
+    CashHistory save(CashHistory cashHistory);
 
-    List<CashFlowHistory> findAllByUser(Long userId);
+    List<CashHistory> findAllByUserId(Long userId);
 }

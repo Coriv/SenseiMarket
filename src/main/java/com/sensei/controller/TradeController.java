@@ -6,7 +6,7 @@ import com.sensei.entity.Trade;
 import com.sensei.entity.TransactionType;
 import com.sensei.exception.*;
 import com.sensei.mapper.TradeMapper;
-import com.sensei.service.TradeDbService;
+import com.sensei.service.TradeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,14 +20,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TradeController {
 
-    private final TradeDbService tradeDbService;
+    private final TradeService tradeService;
     private final TradeMapper tradeMapper;
 
     @GetMapping
     public ResponseEntity<List<TradeDto>> fetchOpenTradesOptionalBySymbolAndType
             (@RequestParam(value = "symbol", required = false) String symbol,
              @RequestParam(value = "type", required = false) TransactionType type) {
-        List<Trade> trades = tradeDbService.findOpenTrades(symbol, type);
+        List<Trade> trades = tradeService.findOpenTrades(symbol, type);
         return ResponseEntity.ok(tradeMapper.mapToTradesListDto(trades));
     }
 
@@ -36,7 +36,7 @@ public class TradeController {
             @RequestParam(value = "userId") Long userId,
             @RequestParam(value = "showClosed", required = false, defaultValue = "false") boolean showClosed)
             throws InvalidUserIdException {
-        List<Trade> trades = tradeDbService.findAllUserTrades(userId, showClosed);
+        List<Trade> trades = tradeService.findAllUserTrades(userId, showClosed);
         return ResponseEntity.ok(tradeMapper.mapToTradesListDto(trades));
     }
 
@@ -44,16 +44,16 @@ public class TradeController {
     public ResponseEntity<Void> createTrade(@Valid @RequestBody TradeDto tradeDto) throws CryptocurrencyNotFoundException, NotEnoughFoundsException, WalletNotFoundException, WalletCryptoNotFoundException {
         Trade trade = tradeMapper.mapToTrade(tradeDto);
         if (trade.getTransactionType().equals(TransactionType.BUY)) {
-            tradeDbService.createNewTradeBuy(trade);
+            tradeService.createNewTradeBuy(trade);
         } else {
-            tradeDbService.createNewTradeSell(trade);
+            tradeService.createNewTradeSell(trade);
         }
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{tradeId}/delete")
     public ResponseEntity<Void> deleteTrade(@PathVariable Long tradeId) throws TradeNotFoundException, WalletCryptoNotFoundException {
-        tradeDbService.deleteTrade(tradeId);
+        tradeService.deleteTrade(tradeId);
         return ResponseEntity.ok().build();
     }
 
@@ -62,7 +62,7 @@ public class TradeController {
                                             @PathVariable Long tradeId,
                                             @RequestParam BigDecimal quantity)
             throws InvalidUserIdException, WalletCryptoNotFoundException, TradeNotFoundException, TradeWithYourselfException, NotEnoughFoundsException, CloneNotSupportedException, OfferIsCloseException {
-        DealDto dealDto = tradeDbService.makeDeal(userId, tradeId, quantity);
+        DealDto dealDto = tradeService.makeDeal(userId, tradeId, quantity);
         return ResponseEntity.ok(dealDto);
     }
 }

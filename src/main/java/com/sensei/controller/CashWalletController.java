@@ -5,7 +5,7 @@ import com.sensei.dto.WithdrawDto;
 import com.sensei.exception.CashWalletNotFoundException;
 import com.sensei.exception.NotEnoughFoundsException;
 import com.sensei.mapper.CashWalletMapper;
-import com.sensei.service.CashWalletDbService;
+import com.sensei.service.CashWalletService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 @RequestMapping("/v1/wallet/cash")
 public class CashWalletController {
 
-    private final CashWalletDbService cashService;
+    private final CashWalletService cashService;
     private final CashWalletMapper cashMapper;
 
     @GetMapping("/{cashWalletId}")
