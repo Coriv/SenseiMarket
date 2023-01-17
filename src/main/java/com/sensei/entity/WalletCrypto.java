@@ -31,7 +31,7 @@ public class WalletCrypto {
     @NotNull
     private Wallet wallet;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cryptocurrency_id")
     @NotNull
     private Cryptocurrency cryptocurrency;

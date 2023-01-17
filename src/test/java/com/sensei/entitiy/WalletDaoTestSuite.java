@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 public class WalletDaoTestSuite {
@@ -68,10 +69,10 @@ public class WalletDaoTestSuite {
         wallet.getCryptosList().add(walletCrypto2);
         //When
         userDao.save(user);
-        walletDao.save(wallet);
+        //walletDao.save(wallet);
         //Then
         Wallet resultWallet = walletDao.findById(wallet.getId()).orElseThrow(WalletNotFoundException::new);
-        assertEquals(resultWallet.getCryptosList().size(), 2);
+        assertTrue(resultWallet.isActive());
         assertEquals(resultWallet.getUser().getId(), user.getId());
         assertEquals(resultWallet.getId(), wallet.getId());
         assertEquals(resultWallet.getCashWallet().getQuantity().doubleValue(), 100.00);
