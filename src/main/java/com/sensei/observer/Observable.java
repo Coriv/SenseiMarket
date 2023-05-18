@@ -1,8 +1,6 @@
 package com.sensei.observer;
 
-import com.sensei.entity.Cryptocurrency;
-
-import java.util.List;
+import com.sensei.cryptocurrency.Cryptocurrency;
 
 public interface Observable {
     void registryObserver(Observer observer);

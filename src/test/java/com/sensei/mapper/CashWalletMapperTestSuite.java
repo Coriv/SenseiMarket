@@ -1,8 +1,9 @@
 package com.sensei.mapper;
 
-import com.sensei.dto.CashWalletDto;
-import com.sensei.entity.CashWallet;
-import com.sensei.entity.Wallet;
+import com.sensei.walletCash.CashWalletDto;
+import com.sensei.walletCash.CashWallet;
+import com.sensei.wallet.Wallet;
+import com.sensei.walletCash.CashWalletMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

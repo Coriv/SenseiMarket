@@ -1,8 +1,9 @@
 package com.sensei.mapper;
 
-import com.sensei.dto.UserDto;
-import com.sensei.entity.User;
-import com.sensei.entity.Wallet;
+import com.sensei.user.UserDto;
+import com.sensei.user.User;
+import com.sensei.user.UserMapper;
+import com.sensei.wallet.Wallet;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,6 +1,6 @@
 package com.sensei.externalService;
 
-import com.sensei.dto.CryptoPriceDto;
+import com.sensei.cryptoPrice.CryptoPriceDto;
 import com.sensei.exception.EmptyCryptocurrencyDatabaseException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

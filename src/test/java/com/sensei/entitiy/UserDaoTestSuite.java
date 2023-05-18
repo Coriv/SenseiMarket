@@ -1,21 +1,18 @@
 package com.sensei.entitiy;
 
-import com.sensei.entity.User;
-import com.sensei.entity.Cryptocurrency;
-import com.sensei.entity.Wallet;
-import com.sensei.entity.WalletCrypto;
-import com.sensei.exception.CryptocurrencyNotFoundException;
+import com.sensei.user.User;
+import com.sensei.cryptocurrency.Cryptocurrency;
+import com.sensei.wallet.Wallet;
+import com.sensei.walletCrypto.WalletCrypto;
 import com.sensei.exception.InvalidUsernameException;
-import com.sensei.repository.CryptocurrencyDao;
-import com.sensei.repository.UserDao;
-import org.junit.jupiter.api.Assertions;
+import com.sensei.cryptocurrency.CryptocurrencyDao;
+import com.sensei.user.UserDao;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Optional;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;

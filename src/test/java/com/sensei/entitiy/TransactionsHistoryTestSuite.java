@@ -1,11 +1,11 @@
 package com.sensei.entitiy;
 
-import com.sensei.entity.TradeHistory;
-import com.sensei.entity.TransactionType;
-import com.sensei.entity.User;
+import com.sensei.history.TradeHistory;
+import com.sensei.trade.TransactionType;
+import com.sensei.user.User;
 import com.sensei.exception.HistoricalTransactionNotFoundException;
-import com.sensei.repository.TradeHistoryDao;
-import com.sensei.repository.UserDao;
+import com.sensei.history.TradeHistoryDao;
+import com.sensei.user.UserDao;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

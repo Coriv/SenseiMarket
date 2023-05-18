@@ -1,9 +1,10 @@
 package com.sensei.service;
 
-import com.sensei.entity.CashHistory;
-import com.sensei.entity.OperationType;
-import com.sensei.entity.User;
-import com.sensei.repository.CashHistoryDao;
+import com.sensei.history.CashHistService;
+import com.sensei.history.CashHistory;
+import com.sensei.trade.OperationType;
+import com.sensei.user.User;
+import com.sensei.history.CashHistoryDao;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

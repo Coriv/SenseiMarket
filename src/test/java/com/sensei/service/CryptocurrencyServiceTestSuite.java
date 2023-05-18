@@ -1,14 +1,15 @@
 package com.sensei.service;
 
-import com.sensei.dto.UserDto;
-import com.sensei.entity.Cryptocurrency;
-import com.sensei.entity.WalletCrypto;
+import com.sensei.cryptocurrency.CryptocurrencyService;
+import com.sensei.user.UserDto;
+import com.sensei.cryptocurrency.Cryptocurrency;
+import com.sensei.walletCrypto.WalletCrypto;
 import com.sensei.exception.CryptoIsObjectOfTradingException;
 import com.sensei.exception.CryptocurrencyNotFoundException;
 import com.sensei.mailService.MailService;
-import com.sensei.mapper.UserMapper;
-import com.sensei.repository.CryptocurrencyDao;
-import com.sensei.repository.UserDao;
+import com.sensei.user.UserMapper;
+import com.sensei.cryptocurrency.CryptocurrencyDao;
+import com.sensei.user.UserDao;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

@@ -1,7 +1,7 @@
 package com.sensei.scheduler;
 
 import com.sensei.exception.EmptyCryptocurrencyDatabaseException;
-import com.sensei.service.CryptoPriceService;
+import com.sensei.cryptoPrice.CryptoPriceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;

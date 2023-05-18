@@ -1,9 +1,10 @@
 package com.sensei.mapper;
 
-import com.sensei.dto.TradeHistoryDto;
-import com.sensei.entity.TradeHistory;
-import com.sensei.entity.TransactionType;
-import com.sensei.entity.User;
+import com.sensei.history.TradeHistoryDto;
+import com.sensei.history.TradeHistory;
+import com.sensei.history.TransactionHistoryMapper;
+import com.sensei.trade.TransactionType;
+import com.sensei.user.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

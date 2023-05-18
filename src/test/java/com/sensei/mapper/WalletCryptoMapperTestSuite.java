@@ -1,9 +1,10 @@
 package com.sensei.mapper;
 
-import com.sensei.dto.WalletCryptoDto;
-import com.sensei.entity.Cryptocurrency;
-import com.sensei.entity.Wallet;
-import com.sensei.entity.WalletCrypto;
+import com.sensei.walletCrypto.WalletCryptoDto;
+import com.sensei.cryptocurrency.Cryptocurrency;
+import com.sensei.wallet.Wallet;
+import com.sensei.walletCrypto.WalletCrypto;
+import com.sensei.walletCrypto.WalletCryptoMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

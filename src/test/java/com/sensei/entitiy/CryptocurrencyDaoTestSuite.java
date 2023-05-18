@@ -1,7 +1,7 @@
 package com.sensei.entitiy;
 
-import com.sensei.entity.Cryptocurrency;
-import com.sensei.repository.CryptocurrencyDao;
+import com.sensei.cryptocurrency.Cryptocurrency;
+import com.sensei.cryptocurrency.CryptocurrencyDao;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

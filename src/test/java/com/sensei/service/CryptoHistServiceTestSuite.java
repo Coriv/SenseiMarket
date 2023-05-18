@@ -1,9 +1,10 @@
 package com.sensei.service;
 
-import com.sensei.entity.CryptoHistory;
-import com.sensei.entity.OperationType;
-import com.sensei.entity.User;
-import com.sensei.repository.CryptoHistoryDao;
+import com.sensei.history.CryptoHistService;
+import com.sensei.history.CryptoHistory;
+import com.sensei.trade.OperationType;
+import com.sensei.user.User;
+import com.sensei.history.CryptoHistoryDao;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

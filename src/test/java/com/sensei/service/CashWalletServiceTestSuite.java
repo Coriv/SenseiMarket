@@ -1,18 +1,18 @@
 package com.sensei.service;
 
-import com.sensei.dto.WithdrawDto;
-import com.sensei.entity.CashWallet;
-import com.sensei.entity.User;
-import com.sensei.entity.Wallet;
+import com.sensei.walletCash.WithdrawDto;
+import com.sensei.history.CashHistService;
+import com.sensei.walletCash.CashWallet;
+import com.sensei.user.User;
+import com.sensei.wallet.Wallet;
 import com.sensei.exception.CashWalletNotFoundException;
 import com.sensei.exception.NotEnoughFoundsException;
 import com.sensei.externalService.NbpService;
-import com.sensei.repository.CashHistoryDao;
-import com.sensei.repository.CashWalletDao;
+import com.sensei.history.CashHistoryDao;
+import com.sensei.walletCash.CashWalletDao;
+import com.sensei.walletCash.CashWalletService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

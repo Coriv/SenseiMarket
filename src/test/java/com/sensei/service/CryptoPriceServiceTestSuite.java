@@ -1,11 +1,11 @@
 package com.sensei.service;
 
-import com.sensei.entity.CryptoPrice;
-import com.sensei.entity.Cryptocurrency;
+import com.sensei.cryptoPrice.CryptoPrice;
+import com.sensei.cryptoPrice.CryptoPriceService;
+import com.sensei.cryptocurrency.Cryptocurrency;
 import com.sensei.exception.CryptocurrencyNotFoundException;
-import com.sensei.repository.CryptoPriceDao;
-import com.sensei.repository.CryptocurrencyDao;
-import org.junit.jupiter.api.Assertions;
+import com.sensei.cryptoPrice.CryptoPriceDao;
+import com.sensei.cryptocurrency.CryptocurrencyDao;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -18,7 +18,6 @@ import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)

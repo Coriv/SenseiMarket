@@ -1,7 +1,8 @@
 package com.sensei.mapper;
 
-import com.sensei.dto.CryptoPriceDto;
-import com.sensei.entity.CryptoPrice;
+import com.sensei.cryptoPrice.CryptoPriceDto;
+import com.sensei.cryptoPrice.CryptoPrice;
+import com.sensei.cryptoPrice.CryptoPriceMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

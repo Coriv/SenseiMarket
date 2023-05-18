@@ -1,11 +1,17 @@
 package com.sensei.entitiy;
 
-import com.sensei.entity.*;
+import com.sensei.cryptocurrency.Cryptocurrency;
 import com.sensei.exception.TradeNotFoundException;
-import com.sensei.repository.CryptocurrencyDao;
-import com.sensei.repository.TradeDao;
-import com.sensei.repository.UserDao;
-import com.sensei.repository.WalletDao;
+import com.sensei.cryptocurrency.CryptocurrencyDao;
+import com.sensei.trade.TradeDao;
+import com.sensei.trade.Trade;
+import com.sensei.trade.TransactionType;
+import com.sensei.user.UserDao;
+import com.sensei.wallet.WalletDao;
+import com.sensei.user.User;
+import com.sensei.wallet.Wallet;
+import com.sensei.walletCash.CashWallet;
+import com.sensei.walletCrypto.WalletCrypto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

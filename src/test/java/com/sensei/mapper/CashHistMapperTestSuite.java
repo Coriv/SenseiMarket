@@ -1,8 +1,9 @@
 package com.sensei.mapper;
 
-import com.sensei.entity.CashHistory;
-import com.sensei.entity.OperationType;
-import com.sensei.entity.User;
+import com.sensei.history.CashHistMapper;
+import com.sensei.history.CashHistory;
+import com.sensei.trade.OperationType;
+import com.sensei.user.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

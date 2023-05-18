@@ -1,9 +1,10 @@
 package com.sensei.mapper;
 
-import com.sensei.dto.CryptoHistoryDto;
-import com.sensei.entity.CryptoHistory;
-import com.sensei.entity.OperationType;
-import com.sensei.entity.User;
+import com.sensei.history.CryptoHistMapper;
+import com.sensei.history.CryptoHistoryDto;
+import com.sensei.history.CryptoHistory;
+import com.sensei.trade.OperationType;
+import com.sensei.user.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

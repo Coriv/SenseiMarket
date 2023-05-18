@@ -1,10 +1,10 @@
 package com.sensei.externalService;
 
 import com.sensei.config.AdminConfig;
-import com.sensei.dto.CryptoPriceDto;
-import com.sensei.entity.Cryptocurrency;
+import com.sensei.cryptoPrice.CryptoPriceDto;
+import com.sensei.cryptocurrency.Cryptocurrency;
 import com.sensei.exception.EmptyCryptocurrencyDatabaseException;
-import com.sensei.service.CryptocurrencyService;
+import com.sensei.cryptocurrency.CryptocurrencyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;

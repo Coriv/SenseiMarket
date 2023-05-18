@@ -1,11 +1,12 @@
 package com.sensei.service;
 
-import com.sensei.entity.Cryptocurrency;
-import com.sensei.entity.User;
-import com.sensei.entity.Wallet;
-import com.sensei.entity.WalletCrypto;
+import com.sensei.cryptocurrency.Cryptocurrency;
+import com.sensei.user.User;
+import com.sensei.wallet.Wallet;
+import com.sensei.walletCrypto.WalletCrypto;
 import com.sensei.exception.*;
-import com.sensei.repository.UserDao;
+import com.sensei.user.UserDao;
+import com.sensei.user.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

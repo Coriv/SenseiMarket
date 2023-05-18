@@ -1,8 +1,6 @@
 package com.sensei.externalService;
 
 import com.sensei.config.AdminConfig;
-import com.sensei.dto.ExchangeRateDto;
-import com.sensei.dto.RatesDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;

@@ -1,8 +1,8 @@
 package com.sensei.mapper;
 
-import com.sensei.dto.CryptocurrencyDto;
-import com.sensei.entity.Cryptocurrency;
-import org.junit.jupiter.api.Assertions;
+import com.sensei.cryptocurrency.CryptocurrencyDto;
+import com.sensei.cryptocurrency.Cryptocurrency;
+import com.sensei.cryptocurrency.CryptocurrencyMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

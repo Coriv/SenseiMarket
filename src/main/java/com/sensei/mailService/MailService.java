@@ -1,7 +1,7 @@
 package com.sensei.mailService;
 
 import com.sensei.config.MailMessageConfig;
-import com.sensei.entity.Cryptocurrency;
+import com.sensei.cryptocurrency.Cryptocurrency;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.SimpleMailMessage;

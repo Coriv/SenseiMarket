@@ -1,14 +1,19 @@
 package com.sensei.service;
 
 import com.sensei.config.AdminConfig;
-import com.sensei.entity.*;
+import com.sensei.cryptocurrency.Cryptocurrency;
 import com.sensei.exception.InvalidUserIdException;
 import com.sensei.exception.UserNotVerifyException;
 import com.sensei.exception.WalletAlreadyExistException;
 import com.sensei.exception.WalletNotFoundException;
-import com.sensei.repository.CryptocurrencyDao;
-import com.sensei.repository.UserDao;
-import com.sensei.repository.WalletDao;
+import com.sensei.cryptocurrency.CryptocurrencyDao;
+import com.sensei.user.UserDao;
+import com.sensei.wallet.WalletDao;
+import com.sensei.user.User;
+import com.sensei.wallet.Wallet;
+import com.sensei.wallet.WalletService;
+import com.sensei.walletCash.CashWallet;
+import com.sensei.walletCrypto.WalletCrypto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -22,7 +27,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
 
