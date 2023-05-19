@@ -29,6 +29,7 @@ public class Trade {
     private Wallet wallet;
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     private TransactionType transactionType;
 
     @ManyToOne(fetch = FetchType.LAZY,

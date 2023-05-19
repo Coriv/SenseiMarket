@@ -35,9 +35,7 @@ public class CryptocurrencyService implements Observable {
     }
 
     public Cryptocurrency add(Cryptocurrency cryptocurrency) {
-        if(observers.size() == 0) {
-            updateObserversList();
-        }
+        updateObserversList();
         var savedCryptocurrency = cryptocurrencyDao.save(cryptocurrency);
         notifyObserves(savedCryptocurrency);
         return savedCryptocurrency;

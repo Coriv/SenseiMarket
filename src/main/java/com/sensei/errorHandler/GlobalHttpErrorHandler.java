@@ -1,10 +1,14 @@
 package com.sensei.errorHandler;
 
 import com.sensei.exception.*;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @ControllerAdvice
 public class GlobalHttpErrorHandler {
@@ -44,6 +48,7 @@ public class GlobalHttpErrorHandler {
     public ResponseEntity<Object> tradeNotFoundHandler(TradeNotFoundException e) {
         return new ResponseEntity<>("Trade with given ID does not exist", HttpStatus.BAD_REQUEST);
     }
+
     @ExceptionHandler(UserNotVerifyException.class)
     public ResponseEntity<Object> userNotVerifyHandler(UserNotVerifyException e) {
         return new ResponseEntity<>("Verify user PESEL and ID card first to create wallet", HttpStatus.BAD_REQUEST);
@@ -92,5 +97,15 @@ public class GlobalHttpErrorHandler {
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<Object> userNotFoundHandler(UserNotFoundException e) {
         return new ResponseEntity<>("User not found!", HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ResponseEntity<Object> usernameNotFoundHandler(UsernameNotFoundException e) {
+        return new ResponseEntity<>("Username not found.", HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ResponseEntity<Object> expiredJwtException(ExpiredJwtException e) {
+        return new ResponseEntity<>("Expired token", UNAUTHORIZED);
     }
 }

@@ -14,10 +14,12 @@ import java.util.List;
 @RequestMapping("/v1/user")
 @RequiredArgsConstructor
 @Slf4j
+@CrossOrigin("*")
 public class UserController {
 
     private final UserService userService;
     private final UserMapper userMapper;
+    private final AuthService authService;
 
     @GetMapping
     public ResponseEntity<List<UserDto>> fetchAllUsers() {
@@ -37,17 +39,25 @@ public class UserController {
     }
 
     @GetMapping("/findWallet")
-    public ResponseEntity<Long> findWalledId
-            (@RequestParam String username) throws UserNotFoundException {
+    public ResponseEntity<Long> findWalledId(
+            @RequestParam String username) throws UserNotFoundException {
         var walletId = userService.findWalletId(username);
         return ResponseEntity.ok(walletId);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> createUser(@Valid @RequestBody UserDto userDto) throws UserNotVerifyException, WalletAlreadyExistException, InvalidUserIdException {
+    public ResponseEntity<AuthResponse> createUser(
+            @Valid @RequestBody UserDto userDto) throws UserNotVerifyException, WalletAlreadyExistException, InvalidUserIdException {
         var user = userMapper.mapToUser(userDto);
-        userService.createUser(user);
-        return ResponseEntity.ok().build();
+        var token = userService.createUser(user);
+        return ResponseEntity.ok(AuthResponse.builder()
+                .token(token)
+                .build());
+    }
+
+    @PostMapping(value = "/auth", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<AuthResponse> authenticate(@RequestBody AuthDto authDto) {
+        return ResponseEntity.ok(authService.authenticate(authDto));
     }
 
     @PutMapping("/block")

@@ -84,12 +84,12 @@ public class User implements UserDetails {
             fetch = FetchType.LAZY,
             mappedBy = "user")
     private List<CryptoHistory> cryptoFlows = new ArrayList<>();
-
-    private String authority;
+    @Enumerated(EnumType.STRING)
+    private Role authority;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Arrays.asList(new SimpleGrantedAuthority("USER"));
+        return Arrays.asList(new SimpleGrantedAuthority(authority.name()));
     }
 
     @Override

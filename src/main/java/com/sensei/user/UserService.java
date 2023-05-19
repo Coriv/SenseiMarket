@@ -1,9 +1,10 @@
 package com.sensei.user;
 
+import com.sensei.config.security.JwtService;
 import com.sensei.cryptocurrency.CryptocurrencyService;
+import com.sensei.exception.*;
 import com.sensei.wallet.WalletService;
 import com.sensei.walletCrypto.WalletCrypto;
-import com.sensei.exception.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ public class UserService {
     private final UserMapper userMapper;
     private final CryptocurrencyService cryptoService;
     private final WalletService walletService;
+    private final JwtService jwtService;
 
     public User findUserById(Long id) throws InvalidUserIdException {
         return userDao.findById(id).orElseThrow(InvalidUserIdException::new);
@@ -30,14 +32,15 @@ public class UserService {
         return userDao.findAll();
     }
 
-    public User createUser(User user) throws UserNotVerifyException, WalletAlreadyExistException, InvalidUserIdException {
+    public String createUser(User user) throws UserNotVerifyException, WalletAlreadyExistException, InvalidUserIdException {
         user.setActive(true);
         user.setDateOfJoin(LocalDateTime.now());
+        user.setAuthority(Role.USER);
         var createdUser = userDao.save(user);
         if (user.getPESEL() != null && user.getIdCard() != null) {
             walletService.createWallet(createdUser.getId());
         }
-        return createdUser;
+        return jwtService.generateToken(createdUser);
     }
 
     public User updateUser(User user) {
