@@ -85,7 +85,7 @@ class UserServiceTestSuite {
         user.setLastName("Brown");
         when(userDao.save(any(User.class))).thenReturn(user);
         //When
-        // todo check if tests are fit with new user creation User resultUser = dbService.createUser(user);
+        //todo check if tests are fit with new user creation User resultUser = dbService.createUser(user);
         //Then
         //assertEquals(resultUser.getFirstName(), "Sebastian");
         //assertEquals(resultUser.getLastName(), "Brown");

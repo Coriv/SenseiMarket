@@ -8,8 +8,6 @@ import lombok.Data;
 @Data
 public class CryptocurrencyDto {
 
-    @NotNull
-    private String symbol;
-    @NotNull
-    private String name;
+    private final String symbol;
+    private final String name;
 }

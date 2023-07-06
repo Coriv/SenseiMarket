@@ -1,6 +1,5 @@
 package com.sensei.cryptocurrency;
 
-import com.sensei.cryptocurrency.Cryptocurrency;
 import jakarta.transaction.Transactional;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

@@ -59,7 +59,6 @@ public class User implements UserDetails {
     @Email
     @NotNull
     private String email;
-
     @NotNull
     private boolean active = true;
 

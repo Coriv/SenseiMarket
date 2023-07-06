@@ -39,11 +39,6 @@ public class GlobalHttpErrorHandler {
         return new ResponseEntity<>("Wallet still have founds. Withdraw found first to remove wallet", HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(NotEnoughFoundsException.class)
-    public ResponseEntity<Object> notEnoughFoundHandler(NotEnoughFoundsException e) {
-        return new ResponseEntity<>("You don't have enough found to complete this transaction", HttpStatus.CONFLICT);
-    }
-
     @ExceptionHandler(TradeNotFoundException.class)
     public ResponseEntity<Object> tradeNotFoundHandler(TradeNotFoundException e) {
         return new ResponseEntity<>("Trade with given ID does not exist", HttpStatus.BAD_REQUEST);

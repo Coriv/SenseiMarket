@@ -1,14 +1,12 @@
 package com.sensei.cryptocurrency;
 
 import com.sensei.user.UserDto;
-import com.sensei.cryptocurrency.Cryptocurrency;
 import com.sensei.exception.CryptoIsObjectOfTradingException;
 import com.sensei.exception.CryptocurrencyNotFoundException;
 import com.sensei.mailService.MailService;
 import com.sensei.user.UserMapper;
 import com.sensei.observer.Observable;
 import com.sensei.observer.Observer;
-import com.sensei.cryptocurrency.CryptocurrencyDao;
 import com.sensei.user.UserDao;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

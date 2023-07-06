@@ -6,15 +6,13 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @Service
 @RequiredArgsConstructor
 public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final UserDao userDao;
     private final JwtService jwtService;
+
     public AuthResponse authenticate(AuthDto authDto) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
